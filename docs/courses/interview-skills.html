@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Complete Interview Skills Course — theHUB @PATH</title>
 <meta name="description" content="A practical, client-focused training course on coaching clients through interviews — with deep focus on interview anxiety, disability disclosure, and neurodivergent clients. Ontario-grounded.">
+<meta name="course-id" content="interview-skills">
+<meta name="course-title" content="Interview Skills">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="theHUB @PATH">
 <meta property="og:title" content="The Complete Interview Skills Course — theHUB @PATH">
@@ -27,6 +29,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css?v=20260517">
+<link rel="stylesheet" href="_shared/course-features.css?v=20260529">
+<script src="_shared/course-features.js?v=20260529" defer></script>
 <style>
   :root {
     --path-blue: #0b3954;
@@ -528,6 +532,10 @@
 
   <h3>Two horizons, not one</h3>
   <p>Good interview coaching works on two horizons at the same time. The first is <strong>this interview</strong> — help the client land the offer in front of them. The second is <strong>the next ten interviews</strong> — leave the client more equipped to handle their own job search a year from now, without a counsellor in the room. Every coaching decision in this course is judged against both. A move that lands this offer but leaves the client unable to repeat it without you is not actually a win.</p>
+
+  <h3>Pause and reflect</h3>
+  <div data-reflection="m2-two-horizons"
+       data-prompt="Think of a current client. Is your last coaching move helping them land *this* interview, or the next ten? Name one move you'd undo if you could — and what you'd try instead."></div>
 </section>
 
 <!-- ============================================================ -->
@@ -761,6 +769,10 @@
     <p>With a client, set a 60-minute appointment. Build the seven categories above into a 1-page worksheet (or just write the headers). For each category, ask the excavation questions. Capture S, T, A, R as bullet points only — no sentences. Aim to leave the session with at least five examples drafted, even if rough.</p>
     <p>Homework for the client: polish them into spoken form before the next session. Run a mock interview in the next session using only those five examples — see if they redeploy across the question bank.</p>
   </details>
+
+  <h3>Pause and reflect</h3>
+  <div data-reflection="m4-star-story-draft"
+       data-prompt="Pick one current client. Draft a STAR story from something on their resume or volunteer history — Situation, Task, Action, Result — even if rough. What did the framework surface that a normal conversation wouldn't have?"></div>
 </section>
 
 <!-- ============================================================ -->
@@ -1094,6 +1106,10 @@
     </tbody>
   </table>
   <p>Making a warm referral without overstepping scope: <strong>name what you observe</strong> ("I notice you've cancelled the last two interviews — that's a pattern worth understanding"), <strong>normalize</strong> ("interview anxiety is treatable; the wait for free CBT in Ontario isn't bad"), <strong>hand off concretely</strong> ("Want to fill out the BounceBack self-referral together right now?"). Don't diagnose; don't offer therapy; don't speculate about medication.</p>
+
+  <h3>Pause and reflect</h3>
+  <div data-reflection="m7-the-cancel-pattern"
+       data-prompt="Think of a client who has cancelled or no-showed interviews more than once. What's the conversation about that pattern you've been avoiding? Write the exact opening sentence you'll use the next time it happens."></div>
 </section>
 
 <!-- ============================================================ -->
@@ -3390,8 +3406,8 @@
 <style>
   .back-to-top {
     position: fixed;
-    right: 1rem;
-    bottom: 1.25rem;
+    right: 1.25rem;
+    bottom: 5.5rem; /* stack above the .a11y-button (52px @ bottom: 1.25rem) */
     z-index: 70;
     width: 44px; height: 44px;
     border-radius: 50%;
@@ -3412,7 +3428,7 @@
   .back-to-top:hover { background: var(--path-blue-light); }
   .back-to-top:focus { outline: 3px solid var(--path-accent); outline-offset: 2px; }
   .back-to-top svg { width: 22px; height: 22px; }
-  @media (max-width: 600px) { .back-to-top { right: .75rem; bottom: .75rem; } }
+  @media (max-width: 600px) { .back-to-top { right: .75rem; bottom: 5rem; } }
   @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
 </style>
 <script>

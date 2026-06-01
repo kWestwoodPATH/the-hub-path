@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Complete Resume Course — theHUB @PATH</title>
 <meta name="description" content="A practical, client-focused training course on building resumes that get interviews — with deep focus on low-skill and barriered clients, and field-specific guidance for trades, IT, finance, healthcare, retail, and more.">
+<meta name="course-id" content="resume-writing">
+<meta name="course-title" content="Resume Writing">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="theHUB @PATH">
 <meta property="og:title" content="The Complete Resume Course — theHUB @PATH">
@@ -27,6 +29,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css?v=20260517">
+<link rel="stylesheet" href="_shared/course-features.css?v=20260529">
+<script src="_shared/course-features.js?v=20260529" defer></script>
 <style>
   /* Course-specific styles — scoped to the course content area only.
      Brand colours pulled toward theHUB palette so the course feels native to the site. */
@@ -4202,8 +4206,8 @@
 <style>
   .back-to-top {
     position: fixed;
-    right: 1rem;
-    bottom: 1.25rem;
+    right: 1.25rem;
+    bottom: 5.5rem; /* stack above the .a11y-button (52px @ bottom: 1.25rem) */
     z-index: 70;
     width: 44px; height: 44px;
     border-radius: 50%;
@@ -4225,7 +4229,7 @@
   .back-to-top:focus { outline: 3px solid var(--path-accent); outline-offset: 2px; }
   .back-to-top svg { width: 22px; height: 22px; }
   @media (max-width: 600px) {
-    .back-to-top { right: .75rem; bottom: .75rem; }
+    .back-to-top { right: .75rem; bottom: 5rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .back-to-top { transition: none; }

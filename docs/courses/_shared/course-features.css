@@ -1,0 +1,417 @@
+/* =============================================================================
+   theHUB course features — shared styles
+   Loaded by interview-skills.html and resume-writing.html.
+   All classes are prefixed `tc-` to avoid collision with the course's own styles.
+   ========================================================================== */
+
+/* ---------- Theme vars (fall back if the site stylesheet hasn't set them) -- */
+:root {
+  --tc-navy: var(--navy, #0b3954);
+  --tc-sage: var(--capacity-sage, #6e9c7f);
+  --tc-muted: var(--text-muted, #6b7280);
+  --tc-line: #e5e7eb;
+  --tc-bg-soft: #f8fafc;
+  --tc-bg-card: #ffffff;
+  --tc-radius: 10px;
+  --tc-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+  --tc-shadow-hover: 0 2px 8px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+}
+
+/* ---------- 1. Progress dashboard ------------------------------------------ */
+.tc-dashboard {
+  background: var(--tc-bg-card);
+  border: 1px solid var(--tc-line);
+  border-left: 4px solid var(--tc-sage);
+  border-radius: var(--tc-radius);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 2rem;
+  box-shadow: var(--tc-shadow);
+}
+.tc-dashboard__title {
+  margin: 0 0 .5rem;
+  font-size: 1rem;
+  color: var(--tc-navy);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.tc-dashboard__bar {
+  height: 8px;
+  background: var(--tc-bg-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: .5rem 0;
+}
+.tc-dashboard__bar-fill {
+  height: 100%;
+  background: var(--tc-sage);
+  transition: width .35s ease;
+}
+.tc-dashboard__stats {
+  margin: .25rem 0 .5rem;
+  font-size: .95rem;
+  color: var(--tc-navy);
+}
+.tc-dashboard__privacy {
+  margin: .5rem 0 .75rem;
+  padding: .6rem .75rem;
+  font-size: .85rem;
+  line-height: 1.45;
+  color: var(--tc-navy);
+  background: var(--tc-bg-soft);
+  border-radius: 6px;
+  border-left: 3px solid var(--tc-sage);
+}
+.tc-dashboard__modules {
+  margin-top: .5rem;
+}
+.tc-dashboard__modules > summary {
+  cursor: pointer;
+  font-size: .9rem;
+  color: var(--tc-muted);
+  padding: .25rem 0;
+}
+.tc-dashboard__modules > summary:hover {
+  color: var(--tc-navy);
+}
+.tc-dashboard__modules ul {
+  list-style: none;
+  margin: .5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .25rem;
+}
+.tc-dashboard__modules li {
+  font-size: .9rem;
+  line-height: 1.4;
+}
+.tc-dashboard__modules li a {
+  text-decoration: none;
+  color: var(--tc-muted);
+  display: block;
+  padding: .25rem .5rem;
+  border-radius: 6px;
+}
+.tc-dashboard__modules li a:hover {
+  background: var(--tc-bg-soft);
+  color: var(--tc-navy);
+}
+.tc-dashboard__modules li.tc-done a {
+  color: var(--tc-navy);
+}
+.tc-dashboard__modules li em {
+  font-style: normal;
+  color: var(--tc-sage);
+  font-weight: 600;
+  margin-right: .25rem;
+}
+.tc-dashboard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--tc-line);
+}
+.tc-dashboard__actions button {
+  font-size: .85rem;
+  padding: .4rem .75rem;
+  border-radius: 6px;
+  border: 1px solid var(--tc-line);
+  background: var(--tc-bg-card);
+  color: var(--tc-muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+.tc-dashboard__actions button:hover {
+  border-color: var(--tc-navy);
+  color: var(--tc-navy);
+}
+.tc-dashboard__actions button[data-action="reset-progress"]:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* ---------- 2. Mark-module-complete button --------------------------------- */
+.tc-mark-complete {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.5rem;
+  padding: .6rem 1rem;
+  font-size: .95rem;
+  font-family: inherit;
+  font-weight: 600;
+  background: var(--tc-bg-card);
+  color: var(--tc-navy);
+  border: 1.5px solid var(--tc-navy);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tc-mark-complete:hover {
+  background: var(--tc-navy);
+  color: #fff;
+}
+.tc-mark-complete--done {
+  background: var(--tc-sage);
+  color: #fff;
+  border-color: var(--tc-sage);
+}
+.tc-mark-complete--done:hover {
+  background: var(--tc-bg-card);
+  color: var(--tc-sage);
+  border-color: var(--tc-sage);
+}
+
+/* ---------- 3. Resume banner ----------------------------------------------- */
+.tc-resume-banner {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  max-width: min(560px, calc(100vw - 2rem));
+  padding: .75rem 1rem;
+  background: var(--tc-navy);
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  font-size: .95rem;
+  animation: tc-banner-in .3s ease;
+}
+@keyframes tc-banner-in {
+  from { opacity: 0; transform: translate(-50%, 1rem); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.tc-resume-banner span { flex: 1 1 auto; }
+.tc-resume-banner button {
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.4);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+.tc-resume-banner button[data-action="resume"] {
+  background: var(--tc-sage);
+  border-color: var(--tc-sage);
+}
+.tc-resume-banner button[data-action="resume"]:hover { filter: brightness(1.1); }
+.tc-resume-banner button[data-action="dismiss"] {
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tc-resume-banner button[data-action="dismiss"]:hover { background: rgba(255,255,255,.1); }
+
+@media (max-width: 480px) {
+  .tc-resume-banner {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    font-size: .9rem;
+  }
+  .tc-resume-banner span { flex-basis: 100%; }
+}
+
+/* ---------- 4. Reflection journal ------------------------------------------ */
+.tc-reflection {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--tc-bg-soft);
+  border-left: 4px solid var(--tc-navy);
+  border-radius: var(--tc-radius);
+}
+.tc-reflection__prompt {
+  margin: 0 0 .5rem;
+  font-weight: 600;
+  color: var(--tc-navy);
+}
+.tc-reflection__input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.55;
+  padding: .65rem .75rem;
+  border: 1px solid var(--tc-line);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  resize: vertical;
+  min-height: 5rem;
+  box-sizing: border-box;
+}
+.tc-reflection__input:focus {
+  outline: 2px solid var(--tc-sage);
+  outline-offset: 1px;
+  border-color: var(--tc-sage);
+}
+.tc-reflection__status {
+  margin: .35rem 0 0;
+  font-size: .8rem;
+  color: var(--tc-muted);
+  font-style: italic;
+}
+.tc-reflection__privacy {
+  font-size: .8rem;
+  color: var(--tc-muted);
+  margin: 0 0 .5rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.tc-reflection__privacy::before {
+  content: "🔒";
+  font-style: normal;
+}
+
+/* ---------- 5. Branching scenarios ----------------------------------------- */
+.tc-scenario {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--tc-bg-card);
+  border: 1px solid var(--tc-line);
+  border-top: 4px solid var(--tc-sage);
+  border-radius: var(--tc-radius);
+  box-shadow: var(--tc-shadow);
+}
+.tc-scenario__label {
+  display: inline-block;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 700;
+  color: var(--tc-sage);
+  margin-bottom: .25rem;
+}
+.tc-scenario > h3,
+.tc-scenario > h4 {
+  margin: 0 0 .5rem;
+  color: var(--tc-navy);
+}
+.tc-scenario__prompt {
+  margin: 0 0 1rem;
+}
+.tc-scenario__prompt strong {
+  display: block;
+  margin-top: .75rem;
+  color: var(--tc-navy);
+}
+
+.tc-scenario__choices {
+  display: grid;
+  gap: .5rem;
+  margin: 1rem 0;
+}
+.tc-scenario__choices button,
+.tc-scenario [data-choice] {
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: left;
+  padding: .75rem 1rem;
+  background: var(--tc-bg-soft);
+  border: 1.5px solid var(--tc-line);
+  border-radius: 8px;
+  color: var(--tc-navy);
+  cursor: pointer;
+  transition: all .15s ease;
+  line-height: 1.4;
+}
+.tc-scenario__choices button:hover,
+.tc-scenario [data-choice]:hover {
+  border-color: var(--tc-navy);
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: var(--tc-shadow);
+}
+.tc-scenario__choices button.tc-explored,
+.tc-scenario [data-choice].tc-explored {
+  background: #fff;
+  border-color: var(--tc-sage);
+  position: relative;
+}
+.tc-scenario__choices button.tc-explored::after,
+.tc-scenario [data-choice].tc-explored::after {
+  content: "✓";
+  position: absolute;
+  right: .75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--tc-sage);
+  font-weight: 700;
+}
+
+.tc-scenario [data-outcome] {
+  margin: 1rem 0 0;
+  padding: 1rem 1.25rem;
+  background: var(--tc-bg-soft);
+  border-radius: 8px;
+  border-left: 3px solid var(--tc-navy);
+}
+.tc-scenario [data-outcome] p:first-child { margin-top: 0; }
+.tc-scenario [data-outcome] p:last-child { margin-bottom: 0; }
+.tc-scenario [data-outcome] strong { color: var(--tc-navy); }
+
+.tc-scenario__debrief-gate {
+  margin-top: 1rem;
+  font-size: .9rem;
+  color: var(--tc-muted);
+  font-style: italic;
+}
+
+.tc-scenario__debrief {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(180deg, #fff, var(--tc-bg-soft));
+  border: 1px solid var(--tc-sage);
+  border-radius: 8px;
+}
+.tc-scenario__debrief > h4,
+.tc-scenario__debrief > strong:first-child {
+  display: block;
+  margin: 0 0 .5rem;
+  color: var(--tc-navy);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+/* ---------- Print: hide interactive features ------------------------------- */
+@media print {
+  .tc-resume-banner,
+  .tc-mark-complete,
+  .tc-dashboard__actions {
+    display: none !important;
+  }
+  .tc-dashboard {
+    page-break-inside: avoid;
+  }
+  .tc-dashboard__modules[open] > summary,
+  .tc-dashboard__modules:not([open]) > summary { display: none; }
+  .tc-dashboard__modules ul { display: block; }
+  .tc-scenario__choices,
+  .tc-reflection__input { display: none; }
+  .tc-scenario [data-outcome],
+  .tc-scenario__debrief { display: block !important; }
+}
+
+/* ---------- Reduced motion --------------------------------------------------*/
+@media (prefers-reduced-motion: reduce) {
+  .tc-resume-banner { animation: none; }
+  .tc-dashboard__bar-fill { transition: none; }
+  .tc-scenario__choices button:hover,
+  .tc-scenario [data-choice]:hover { transform: none; }
+}
