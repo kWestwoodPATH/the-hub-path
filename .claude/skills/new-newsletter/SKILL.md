@@ -101,6 +101,7 @@ must also be added to the Events page** — otherwise people who only check Even
 
 3. **Avoid duplicates:** before adding, check `events.js` for an entry with the same title + date. If it's already there (e.g. carried over from a previous issue), skip it. Don't delete old/past events — the Events page hides past dates automatically.
 4. Only `title` and `date` (YYYY-MM-DD) are required; include `time`, `location`, `host`, and `registerUrl` whenever the newsletter provides them.
+5. **Weekly/recurring sessions:** if a session repeats weekly (e.g. a drop-in every Wednesday until a set date), add ONE entry with a `"weeklyUntil": "YYYY-MM-DD"` field (the last occurrence's date) alongside the start `date`. The Events calendar then repeats it on every matching weekday automatically, and the list/popup show it once as a range ("Wednesdays, July 8 – August 26, 2026"). Do **not** create a separate entry per week.
 
 ## Step 4 — Generate the colour PDF
 

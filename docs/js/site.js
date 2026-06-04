@@ -206,6 +206,41 @@ function hubTrack(name, params) {
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) close('escape'); });
 })();
 
+// ---- Homepage welcome popup (first visit) ----
+(function () {
+  const overlay = document.querySelector('#welcome-overlay');
+  if (!overlay) return;
+  const WELCOME_KEY = 'hub-welcome-seen';
+  const closeBtn = document.querySelector('#welcome-close');
+  const dismissBtn = document.querySelector('#welcome-dismiss');
+
+  function close(reason) {
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+    try { localStorage.setItem(WELCOME_KEY, '1'); } catch (e) {}
+    hubTrack('welcome_close', { reason: reason || 'unknown' });
+  }
+
+  if (!localStorage.getItem(WELCOME_KEY)) {
+    setTimeout(() => {
+      overlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      hubTrack('welcome_shown', { trigger: 'first_visit' });
+    }, 600);
+  }
+  if (closeBtn) closeBtn.addEventListener('click', () => close('x'));
+  if (dismissBtn) dismissBtn.addEventListener('click', () => close('got_it'));
+  // Clicking a destination card counts as engagement; let the link navigate.
+  overlay.querySelectorAll('.welcome-card').forEach(card => {
+    card.addEventListener('click', () => {
+      try { localStorage.setItem(WELCOME_KEY, '1'); } catch (e) {}
+      hubTrack('welcome_card_click', { dest: card.getAttribute('href') });
+    });
+  });
+  overlay.addEventListener('click', e => { if (e.target === overlay) close('outside'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) close('escape'); });
+})();
+
 // ---- Job board ----
 (function () {
   const list = document.querySelector('#job-list');
@@ -496,41 +531,76 @@ function hubTrack(name, params) {
   function fmtDate(iso) { try { return new Date(iso).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' }); } catch (e) { return iso; } }
 })();
 
-// ---- Events ----
+// ---- Events + calendar ----
 (function () {
+  const calEl = document.querySelector('#event-calendar');
   const featured = document.querySelector('#event-featured');
   const upcoming = document.querySelector('#event-upcoming');
-  if (!featured && !upcoming) return;
+  if (!calEl && !featured && !upcoming) return;
   const data = window.HUB_EVENTS || [];
-  const now = new Date();
-  const sorted = data
-    .map(e => Object.assign({}, e, { _d: new Date(e.date) }))
-    .filter(e => e._d >= new Date(now.toDateString()))
-    .sort((a, b) => a._d - b._d);
-  if (!sorted.length) {
-    if (featured) featured.innerHTML = '<p>No upcoming events scheduled. Check back soon.</p>';
-    if (upcoming) upcoming.innerHTML = '';
-    return;
+
+  // Parse "YYYY-MM-DD" in LOCAL time so a date never shifts back a day (the
+  // default Date(string) parses as UTC, which shows as the day before in ET).
+  function parseLocal(iso) {
+    const p = String(iso).split('-').map(Number);
+    return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
   }
-  const feat = sorted.find(e => e.featured) || sorted[0];
-  if (feat && featured) featured.innerHTML = featuredHTML(feat);
-  const rest = sorted.filter(e => e !== feat);
-  if (upcoming) upcoming.innerHTML = rest.length ? rest.map(eventCardHTML).join('') : '<p>No additional events scheduled. Check back soon.</p>';
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
+  function isExt(url) { return url && /^https?:/.test(url); }
+  function fmtLong(d) { return d.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); }
+  // Weekly series show as a range ("Wednesdays, July 8 – August 26, 2026"); single events show the full date.
+  function dateLabel(e) {
+    if (e._until) {
+      const wd = e._d.toLocaleDateString('en-CA', { weekday: 'long' }) + 's';
+      const startStr = e._d.toLocaleDateString('en-CA', { month: 'long', day: 'numeric' });
+      const endStr = e._until.toLocaleDateString('en-CA', { month: 'long', day: 'numeric', year: 'numeric' });
+      return wd + ', ' + startStr + ' – ' + endStr;
+    }
+    return fmtLong(e._d);
+  }
 
-  injectEventSchema(sorted);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const all = data
+    .filter(e => e && e.date)
+    .map(e => Object.assign({}, e, { _d: parseLocal(e.date), _until: e.weeklyUntil ? parseLocal(e.weeklyUntil) : null }))
+    .sort((a, b) => a._d - b._d);
+  all.forEach((e, i) => { e._i = i; });
+  const endDate = e => e._until || e._d;            // last occurrence (for weekly series)
+  const upcomingEvents = all.filter(e => endDate(e) >= today);
 
-  function fmt(d) { return new Date(d).toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); }
+  // ----- Featured banner (only on pages that include one) -----
+  let feat = null;
+  if (featured) {
+    if (!upcomingEvents.length) {
+      featured.innerHTML = '<p>No upcoming events scheduled. Check back soon.</p>';
+    } else {
+      feat = upcomingEvents.find(e => e.featured) || upcomingEvents[0];
+      featured.innerHTML = featuredHTML(feat);
+    }
+  }
+
+  // ----- Upcoming list -----
+  if (upcoming) {
+    const list = feat ? upcomingEvents.filter(e => e !== feat) : upcomingEvents;
+    upcoming.innerHTML = list.length ? list.map(eventCardHTML).join('') : '<p>No upcoming events scheduled. Check back soon.</p>';
+  }
+
+  // ----- Calendar -----
+  if (calEl) renderCalendar();
+
+  injectEventSchema(upcomingEvents.length ? upcomingEvents : all);
+
   function dateParts(d) {
-    const dt = new Date(d);
     return {
-      day: dt.toLocaleDateString('en-CA', { weekday: 'long' }),
-      month: dt.toLocaleDateString('en-CA', { month: 'short' }).toUpperCase(),
-      num: dt.getDate(),
-      year: dt.getFullYear()
+      day: d.toLocaleDateString('en-CA', { weekday: 'long' }),
+      month: d.toLocaleDateString('en-CA', { month: 'short' }).toUpperCase(),
+      num: d.getDate(),
+      year: d.getFullYear()
     };
   }
   function featuredHTML(e) {
-    const dp = dateParts(e.date);
+    const dp = dateParts(e._d);
     const visual = e.image
       ? '<div class="event__image" style="background-image:url(\'' + e.image + '\')"></div>'
       : '<div class="event__datetile" aria-hidden="true">' +
@@ -539,28 +609,107 @@ function hubTrack(name, params) {
           '<span class="event__datetile-num">' + dp.num + '</span>' +
           '<span class="event__datetile-year">' + dp.year + '</span>' +
         '</div>';
-    const ext = e.registerUrl && /^https?:/.test(e.registerUrl);
     return visual +
       '<div class="event__body">' +
         '<span class="event__featured-tag">Featured Event</span>' +
-        '<h2>' + e.title + '</h2>' +
-        '<p class="lead">' + (e.description || '') + '</p>' +
-        (e.location ? '<p><strong>Where:</strong> ' + e.location + '</p>' : '') +
-        (e.time ? '<p><strong>When:</strong> ' + fmt(e.date) + ' &middot; ' + e.time + '</p>' : '<p><strong>When:</strong> ' + fmt(e.date) + '</p>') +
-        (e.registerUrl ? '<a class="btn btn--accent" href="' + e.registerUrl + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>Register</a>' : '') +
+        '<h2>' + esc(e.title) + '</h2>' +
+        '<p class="lead">' + esc(e.description) + '</p>' +
+        (e.location ? '<p><strong>Where:</strong> ' + esc(e.location) + '</p>' : '') +
+        '<p><strong>When:</strong> ' + dateLabel(e) + (e.time ? ' &middot; ' + esc(e.time) : '') + '</p>' +
+        (e.registerUrl ? '<a class="btn btn--accent" href="' + e.registerUrl + '"' + (isExt(e.registerUrl) ? ' target="_blank" rel="noopener"' : '') + '>Register</a>' : '') +
       '</div>';
   }
   function eventCardHTML(e) {
-    const ext = e.registerUrl && /^https?:/.test(e.registerUrl);
     return '<article class="card">' +
-      '<span class="event__date">' + fmt(e.date) + '</span>' +
-      '<h3>' + e.title + '</h3>' +
-      (e.time ? '<p class="card__meta">' + e.time + (e.location ? ' &middot; ' + e.location : '') + '</p>' : '') +
-      '<p>' + (e.description || '') + '</p>' +
+      '<span class="event__date">' + dateLabel(e) + '</span>' +
+      '<h3>' + esc(e.title) + '</h3>' +
+      (e.time || e.location ? '<p class="card__meta">' + esc(e.time || '') + (e.time && e.location ? ' &middot; ' : '') + esc(e.location || '') + '</p>' : '') +
+      '<p>' + esc(e.description) + '</p>' +
       '<div class="card__footer">' +
-        (e.registerUrl ? '<a class="btn btn--outline" href="' + e.registerUrl + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>Register</a>' : '') +
+        (e.registerUrl ? '<a class="btn btn--outline" href="' + e.registerUrl + '"' + (isExt(e.registerUrl) ? ' target="_blank" rel="noopener"' : '') + '>Register</a>' : '') +
       '</div>' +
     '</article>';
+  }
+
+  function renderCalendar() {
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const byDay = {};
+    all.forEach(e => {
+      const occ = [];
+      if (e._until) {
+        for (let cur = new Date(e._d); cur <= e._until; cur.setDate(cur.getDate() + 7)) occ.push(new Date(cur));
+      } else {
+        occ.push(e._d);
+      }
+      occ.forEach(dt => {
+        const k = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+        (byDay[k] = byDay[k] || []).push(e);
+      });
+    });
+    const start = (upcomingEvents[0] || all[0] || { _d: new Date() })._d;
+    const view = new Date(start.getFullYear(), start.getMonth(), 1);
+
+    function draw() {
+      const y = view.getFullYear(), m = view.getMonth();
+      const startDow = new Date(y, m, 1).getDay();
+      const days = new Date(y, m + 1, 0).getDate();
+      let h = '<div class="cal__bar">' +
+        '<button class="cal__nav" type="button" data-nav="-1" aria-label="Previous month">‹</button>' +
+        '<h2 class="cal__title">' + MONTHS[m] + ' ' + y + '</h2>' +
+        '<button class="cal__nav" type="button" data-nav="1" aria-label="Next month">›</button>' +
+        '</div><div class="cal__grid" role="grid">';
+      WD.forEach(w => { h += '<div class="cal__dow" role="columnheader">' + w + '</div>'; });
+      for (let i = 0; i < startDow; i++) h += '<div class="cal__cell cal__cell--empty" role="gridcell"></div>';
+      for (let d = 1; d <= days; d++) {
+        const evs = byDay[y + '-' + m + '-' + d] || [];
+        const cellDate = new Date(y, m, d);
+        const isToday = cellDate.getTime() === today.getTime();
+        const past = cellDate < today;
+        const cls = 'cal__cell' + (evs.length ? ' cal__cell--has' : '') + (isToday ? ' cal__cell--today' : '') + (past ? ' cal__cell--past' : '');
+        h += '<div class="' + cls + '" role="gridcell"><span class="cal__date">' + d + '</span>';
+        evs.forEach(e => {
+          h += '<button class="cal__chip" type="button" data-ev="' + e._i + '" title="' + escAttr(e.title + (e.time ? ' · ' + e.time : '')) + '">' + esc(e.title) + '</button>';
+        });
+        h += '</div>';
+      }
+      calEl.innerHTML = h + '</div>';
+    }
+
+    calEl.addEventListener('click', function (ev) {
+      const nav = ev.target.closest('[data-nav]');
+      if (nav) { view.setMonth(view.getMonth() + Number(nav.getAttribute('data-nav'))); draw(); return; }
+      const chip = ev.target.closest('[data-ev]');
+      if (chip) openModal(all[Number(chip.getAttribute('data-ev'))]);
+    });
+    draw();
+  }
+
+  function openModal(e) {
+    if (!e) return;
+    let modal = document.querySelector('#cal-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'cal-modal';
+      modal.className = 'cal-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.innerHTML = '<div class="cal-modal__backdrop" data-close></div>' +
+        '<div class="cal-modal__panel"><button class="cal-modal__close" type="button" aria-label="Close" data-close>×</button>' +
+        '<div class="cal-modal__content"></div></div>';
+      document.body.appendChild(modal);
+      modal.addEventListener('click', function (ev) { if (ev.target.hasAttribute('data-close')) modal.classList.remove('is-open'); });
+      document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') modal.classList.remove('is-open'); });
+    }
+    modal.querySelector('.cal-modal__content').innerHTML =
+      '<span class="event__date">' + dateLabel(e) + (e.time ? ' &middot; ' + esc(e.time) : '') + '</span>' +
+      '<h3 id="cal-modal-title">' + esc(e.title) + '</h3>' +
+      (e.location ? '<p class="card__meta">' + esc(e.location) + '</p>' : '') +
+      '<p>' + esc(e.description) + '</p>' +
+      (e.registerUrl ? '<p><a class="btn btn--accent" href="' + e.registerUrl + '"' + (isExt(e.registerUrl) ? ' target="_blank" rel="noopener"' : '') + '>Register</a></p>' : '');
+    modal.setAttribute('aria-labelledby', 'cal-modal-title');
+    modal.classList.add('is-open');
+    const c = modal.querySelector('.cal-modal__close'); if (c) c.focus();
   }
 
   function injectEventSchema(events) {

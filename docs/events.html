@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260517">
+  <link rel="stylesheet" href="css/styles.css?v=20260604-5">
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to main content</a>
@@ -61,9 +61,10 @@
 
     <section class="section">
       <div class="container">
-        <article class="event--featured" id="event-featured" aria-live="polite"></article>
+        <p class="center" style="color: var(--text-muted); margin: -.5rem 0 1.5rem;">Click any event for details &amp; registration.</p>
+        <div class="cal" id="event-calendar" aria-label="Events calendar"></div>
 
-        <h2>More upcoming events</h2>
+        <h2 class="mt-3">All upcoming events</h2>
         <div class="grid" id="event-upcoming" aria-live="polite"></div>
 
         <p class="lead center mt-3">Want to suggest a topic or host a session? <a href="contact.html">Let us know.</a></p>
@@ -111,6 +112,6 @@
   </div>
 
   <script src="data/events.js?v=20260517"></script>
-  <script src="js/site.js?v=20260517"></script>
+  <script src="js/site.js?v=20260604-5"></script>
 </body>
 </html>

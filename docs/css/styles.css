@@ -1054,6 +1054,124 @@ p  { margin: 0 0 1em; }
   .event__datetile { min-height: 220px; padding: 1.5rem; }
 }
 
+/* ---- Events calendar ------------------------------------------------- */
+.cal { margin: 0 0 3rem; }
+.cal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.cal__title {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--path-navy);
+  min-width: 12rem;
+  text-align: center;
+}
+.cal__nav {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--hub-blue);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.cal__nav:hover, .cal__nav:focus { background: var(--hub-blue); color: var(--white); outline: none; }
+.cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.cal__dow {
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: .4rem 0;
+}
+.cal__cell {
+  min-height: 96px;
+  min-width: 0;               /* keep all 7 columns equal even when a chip is long */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  padding: .4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cal__cell--empty { border: 0; background: transparent; }
+.cal__cell--past { opacity: .55; }
+.cal__cell--today { border-color: var(--hub-blue); box-shadow: 0 0 0 1px var(--hub-blue) inset; }
+.cal__date { font-size: .8rem; font-weight: 600; color: var(--text-muted); }
+.cal__cell--has .cal__date { color: var(--path-navy); }
+.cal__chip {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 5px;
+  background: var(--hub-blue);
+  color: var(--white);
+  font-family: inherit;
+  font-size: .7rem;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 3px 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background .15s ease;
+}
+.cal__chip:hover, .cal__chip:focus { background: var(--spark-pink); outline: none; }
+@media (max-width: 680px) {
+  .cal__grid { gap: 3px; }
+  .cal__cell { min-height: 68px; padding: .25rem; border-radius: 6px; }
+  .cal__dow { font-size: .6rem; }
+  .cal__date { font-size: .72rem; }
+  .cal__chip { font-size: .58rem; padding: 2px 4px; }
+  .cal__title { font-size: 1.15rem; min-width: 9rem; }
+}
+
+/* Event detail modal (opened from a calendar chip) */
+.cal-modal { position: fixed; inset: 0; z-index: 1000; display: none; }
+.cal-modal.is-open { display: block; }
+.cal-modal__backdrop { position: absolute; inset: 0; background: rgba(11, 57, 84, .55); }
+.cal-modal__panel {
+  position: relative;
+  width: calc(100% - 2rem);
+  max-width: 520px;
+  margin: 8vh auto 0;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+}
+.cal-modal__close {
+  position: absolute;
+  top: .4rem;
+  right: .7rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.cal-modal__close:hover { color: var(--path-navy); }
+.cal-modal__content .event__date { background: none; color: var(--hub-blue); padding: 0; margin: 0 0 .35rem; text-transform: uppercase; letter-spacing: .05em; }
+.cal-modal__content h3 { margin: 0 0 .75rem; color: var(--path-navy); }
+
 /* ---- Newsletters list ----------------------------------------------- */
 .newsletter {
   display: grid;
@@ -1701,6 +1819,7 @@ body.newsletter-page { background: #faf8f3; }
   border: 3px solid #fff;
   box-shadow: 0 4px 14px rgba(11, 57, 84, .22);
   background: var(--capacity-sage);
+  filter: grayscale(100%);   /* author photos render in black & white */
 }
 /* Fallback when no photo is available: a coloured circle with the author's initials. */
 .section-author__photo--initials {
@@ -1711,6 +1830,7 @@ body.newsletter-page { background: #faf8f3; }
   font-size: 1.8rem;
   font-weight: 700;
   text-transform: uppercase;
+  filter: none;   /* initials circle keeps its brand colour; only real photos go greyscale */
 }
 .section-author__name {
   position: absolute;
