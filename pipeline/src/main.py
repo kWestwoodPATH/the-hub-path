@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import re
 import sys
 from pathlib import Path
 from urllib.parse import quote_plus
@@ -40,6 +41,37 @@ def _try_firecrawl():
     except Exception as e:
         log.warning("Firecrawl client init failed: %s", e)
         return None
+
+
+_ASSET_URL_RE = re.compile(r"\.(jpe?g|png|gif|svg|webp|ico|bmp|tiff?|css|js|mp4|mov|woff2?)(\?|#|$)", re.I)
+_JUNK_TITLE_RE = re.compile(r"!\[|\]\(|^\s*\*\*|^\s*$", re.I)
+_NAV_TITLES = {
+    "listen", "play video", "banner video", "apply now", "apply", "scroll down",
+    "review job postings", "current employees apply now", "external applicants apply now",
+    "accessibility policy", "whistleblower", "linkedin", "facebook", "twitter", "instagram",
+}
+
+
+def _is_valid_posting(job: dict) -> tuple[bool, str]:
+    """Guard against scraped page furniture (images, headshots, nav links) reaching the board.
+
+    Returns (is_valid, reason_if_not). Counsellor-submitted jobs bypass this upstream.
+    A real posting needs an http(s) URL that points at a page (not an image/asset) and a
+    title that isn't markdown junk or boilerplate navigation text.
+    """
+    url = (job.get("url") or "").strip()
+    title = (job.get("title") or "").strip()
+    if not url or not url.lower().startswith(("http://", "https://")):
+        return False, "missing/non-http url"
+    if _ASSET_URL_RE.search(url):
+        return False, "url points to an image/asset, not a posting"
+    if not title or len(title) < 4:
+        return False, "title too short"
+    if _JUNK_TITLE_RE.search(title):
+        return False, "title looks like markdown/image junk"
+    if title.strip().lower() in _NAV_TITLES:
+        return False, "title is navigation/boilerplate"
+    return True, ""
 
 
 def _build_client_email(job: dict) -> None:
@@ -138,6 +170,19 @@ def run(args) -> int:
             continue
         kept.append(j)
     log.info("After scam filter: %d (dropped %d)", len(kept), dropped)
+
+    # ---- Validity guard: drop scraped page furniture (images, headshots, nav links) ----
+    valid = []
+    invalid = 0
+    for j in kept:
+        ok, reason = _is_valid_posting(j)
+        if ok or j.get("submitted"):  # never drop counsellor-vetted
+            valid.append(j)
+        else:
+            log.info("Invalid posting dropped: %r @ %s (%s)", j.get("title"), j.get("employer"), reason)
+            invalid += 1
+    kept = valid
+    log.info("After validity guard: %d (dropped %d)", len(kept), invalid)
 
     # ---- Classify + transit enrichment ----
     for j in kept:
