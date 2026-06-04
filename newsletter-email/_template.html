@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+  theHUB @PATH — EMAIL TEASER TEMPLATE
+  ====================================
+  This is the REUSABLE template for the emailable version of a newsletter.
+  It is a short "teaser" that links to the full web version on the site.
+
+  HOW TO USE (each new issue):
+  1. Copy this file to  newsletter-email/<YYYY-MM>-email.html
+  2. Replace every {{PLACEHOLDER}} below:
+       {{PREHEADER}}   - one line of inbox preview text (~80 chars). Not shown in the body.
+       {{ISSUE_TAG}}   - e.g. "Issue 03"
+       {{TITLE}}       - the newsletter title, e.g. "Access in Action"
+       {{SUBTITLE}}    - the subtitle / tagline line
+       {{DATE}}        - human date, e.g. "Monday, June 8, 2026"
+       {{INTRO}}       - 2-3 sentence plain-text intro (keep it short)
+       {{ARTICLES}}    - one PREVIEW BLOCK per article (a taste of the piece + a Read more link).
+                         For each article, copy this block (see 2026-05-email.html for the exact markup):
+                            <h2 ...>Headline</h2>
+                            <p ...>1-2 sentence excerpt</p>
+                            <a href="SECTION_URL">Read more &rarr;</a>
+                            <table ...>thin divider</table>
+                         SECTION_URL = the absolute web URL + the section's anchor id,
+                         e.g. https://www.hub.pathemployment.com/newsletter-2026-06.html#ot-webinar
+       {{WEB_URL}}     - ABSOLUTE link to the full web version (used by the closing button),
+                         e.g. https://www.hub.pathemployment.com/newsletter-2026-06.html
+  3. Leave all styling/structure as-is — it is Outlook-safe (inline styles + tables + VML button).
+  4. To send: see README -> "Publish a newsletter (web + email)".
+
+  RULES (do not break these or it will render badly in Outlook):
+  - Every link and image URL must be ABSOLUTE (https://www.hub.pathemployment.com/...). No relative paths.
+  - Keep it to the single logo image. Don't add inline photos (clients block images by default).
+  - Don't add <link> stylesheets or JavaScript — email clients strip them.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>{{TITLE}} — theHUB @PATH</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
+  <style>
+    /* Honoured by clients that support <style>; Outlook ignores it but the inline styles cover Outlook. */
+    body { margin:0; padding:0; }
+    img { border:0; line-height:100%; outline:none; text-decoration:none; }
+    a { color:#0076bf; }
+    @media only screen and (max-width:620px) {
+      .container { width:100% !important; }
+      .px { padding-left:24px !important; padding-right:24px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#faf8f3;">
+  <!-- Preheader: hidden inbox preview text -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#faf8f3;">
+    {{PREHEADER}}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <!-- Full-width background wrapper -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#faf8f3;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+
+        <!-- 600px container -->
+        <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background-color:#ffffff; border-radius:10px; overflow:hidden;">
+
+          <!-- Header band (white, matching the website header so the logo reads correctly) -->
+          <tr>
+            <td align="center" bgcolor="#ffffff" style="background-color:#ffffff; padding:28px 24px; border-bottom:1px solid #e4e9ed;">
+              <a href="https://www.hub.pathemployment.com/" style="text-decoration:none;">
+                <img src="https://www.hub.pathemployment.com/assets/logos/logo-full.png" width="200" alt="theHUB @PATH" style="display:block; width:200px; max-width:200px; height:auto;">
+              </a>
+            </td>
+          </tr>
+
+          <!-- Issue tag -->
+          <tr>
+            <td class="px" style="padding:32px 40px 0 40px;">
+              <span style="display:inline-block; background-color:#0b3954; color:#ffffff; font-family:Arial,Helvetica,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:2px; padding:6px 12px; border-radius:4px;">{{ISSUE_TAG}}</span>
+            </td>
+          </tr>
+
+          <!-- Title + subtitle + date -->
+          <tr>
+            <td class="px" style="padding:16px 40px 0 40px;">
+              <h1 style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:30px; line-height:1.15; font-weight:bold; color:#0b3954;">{{TITLE}}</h1>
+              <p style="margin:8px 0 0 0; font-family:Arial,Helvetica,sans-serif; font-size:17px; line-height:1.4; color:#4a6275; font-style:italic;">{{SUBTITLE}}</p>
+              <p style="margin:14px 0 0 0; font-family:Arial,Helvetica,sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#4a6275;">{{DATE}}</p>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td class="px" style="padding:20px 40px 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:2px solid #0b3954; font-size:0; line-height:0;">&nbsp;</td></tr></table>
+            </td>
+          </tr>
+
+          <!-- Intro -->
+          <tr>
+            <td class="px" style="padding:24px 40px 0 40px;">
+              <p style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:1.6; color:#0b3954;">{{INTRO}}</p>
+            </td>
+          </tr>
+
+          <!-- Article previews: a taste of each piece + a Read more link. {{ARTICLES}} = one block per article. -->
+          <tr>
+            <td class="px" style="padding:28px 40px 0 40px;">
+              {{ARTICLES}}
+            </td>
+          </tr>
+
+          <!-- Button (bulletproof, VML for Outlook) -->
+          <tr>
+            <td align="center" class="px" style="padding:32px 40px 8px 40px;">
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{WEB_URL}}" style="height:50px; v-text-anchor:middle; width:300px;" arcsize="14%" strokecolor="#0076bf" fillcolor="#0076bf">
+                <w:anchorlock/>
+                <center style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; font-weight:bold;">Read the full newsletter &rarr;</center>
+              </v:roundrect>
+              <![endif]-->
+              <!--[if !mso]><!-->
+              <a href="{{WEB_URL}}" style="background-color:#0076bf; border-radius:7px; color:#ffffff; display:inline-block; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold; line-height:50px; text-align:center; text-decoration:none; width:300px; -webkit-text-size-adjust:none;">Read the full newsletter &rarr;</a>
+              <!--<![endif]-->
+            </td>
+          </tr>
+
+          <!-- Mantra -->
+          <tr>
+            <td align="center" class="px" style="padding:24px 40px 36px 40px;">
+              <p style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:18px; font-style:italic; font-weight:bold; color:#0b3954;">Building Capacity. Amplifying Success.</p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td bgcolor="#0b3954" style="background-color:#0b3954; padding:28px 40px;">
+              <p style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#cdd9e1;">
+                <strong style="color:#ffffff;">theHUB @PATH</strong><br>
+                A program of PATH Employment Services, Hamilton, Ontario.<br>
+                <a href="https://www.hub.pathemployment.com/" style="color:#7cafae; text-decoration:underline;">www.hub.pathemployment.com</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /600px container -->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

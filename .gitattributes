@@ -1,0 +1,8 @@
+* text=auto
+
+# Keep this attributes file stable too.
+.gitattributes text eol=lf
+
+# GitHub Actions and other YAML files should stay LF across platforms.
+*.yml text eol=lf
+*.yaml text eol=lf

@@ -41,9 +41,38 @@ For a quick archive entry pointing to a PDF:
 2. Add an entry to `data/newsletters.js` with `title`, `date`, `summary`, and `file` (e.g. `"assets/newsletters/2026-04-spring.pdf"`).
 
 For a full web-styled newsletter (recommended — see May 2026 as the example):
-1. Drop the PDF in `assets/newsletters/`.
-2. Copy `newsletter-2026-05.html`, rename it (e.g. `newsletter-2026-06.html`), and edit the wording.
-3. Add an entry to `data/newsletters.js` with `page` pointing to the new HTML file and `file` pointing to the PDF. The archive will show a Read button (web) and a PDF button.
+1. Copy `newsletter-2026-05.html`, rename it (e.g. `newsletter-2026-06.html`), and edit the wording.
+2. Add an entry to `data/newsletters.js` with `page` pointing to the new HTML file and `file` pointing to the PDF. The archive will show a Read button (web) and a PDF button.
+3. **Post any sessions to the Events page:** for each dated session announced in the issue, add an entry to `data/events.js` (one per date; required fields `title` + `date`). Skip any that are already listed.
+4. **Generate the PDF** at `assets/newsletters/YYYY-MM-month.pdf` from the finished page so it matches the brand styling (headless Edge: `msedge --headless=new --no-pdf-header-footer --print-to-pdf="…\YYYY-MM-month.pdf" "file:///…/newsletter-YYYY-MM.html"`, using a temp `--user-data-dir` so it runs even if Edge is open). The newsletter print CSS outputs full colour.
+
+> Tip: the `/new-newsletter` skill does all of the above (web page, author photos, archive entry, events, PDF, and the email teaser) in one go — start a new chat, type `/new-newsletter`, and paste the issue content.
+
+**Author photo (sections written by a specific person):** show the writer as a circular photo beside the section title. Save the photo as `assets/people/firstname-lastname.jpg` (square crop ~600x600), then wrap the section number + heading in a `.section-head` row with a `.section-author` figure:
+```html
+<div class="section-head">
+  <div class="section-head__text">
+    <span class="section-number">01</span>
+    <h2>Section title here</h2>
+  </div>
+  <figure class="section-author">
+    <img class="section-author__photo" src="assets/people/jane-doe.jpg" alt="Jane Doe">
+    <figcaption class="section-author__name">Jane Doe</figcaption>
+  </figure>
+</div>
+```
+If there's no photo yet, use the initials fallback instead of the `<img>`:
+```html
+<span class="section-author__photo section-author__photo--initials" style="background:#0076bf" aria-hidden="true">JD</span>
+```
+(Sections with no specific author — e.g. a letter from Kevin — just keep the plain `<span class="section-number">` + `<h2>` with no `.section-head` wrapper.)
+
+### Email a newsletter (previews → link to the web version)
+The web version is the full newsletter; the email shows a short excerpt of each article with a "Read more →" link, plus a closing button to the full issue. Email clients (especially Outlook) strip external CSS and JavaScript, so the email is a separate inline-styled file in `newsletter-email/`.
+1. Copy `newsletter-email/_template.html` to `newsletter-email/<YYYY-MM>-email.html` (see `2026-05-email.html` as the worked example).
+2. Replace the `{{PLACEHOLDERS}}`: issue tag, title, subtitle, date, a 2–3 sentence intro, the `{{ARTICLES}}` preview blocks (one per article — a 1–2 sentence excerpt + a "Read more →" link pointing at the section's anchor on the web page), and the **absolute** `WEB_URL` for the closing button. The header uses `logo-full.png` on white (not `logo-on-dark.png`). The list is managed elsewhere, so the footer has no mailing address or unsubscribe line — don't add them.
+3. **Send from Outlook:** new email → **Insert ▸ Attach File ▸ pick the `.html` ▸ click the arrow next to Insert ▸ "Insert as Text"** (drops the rendered email into the body). Fallback: open the `.html` in Edge/Chrome, Ctrl+A, Ctrl+C, paste into a new message.
+4. **Always send yourself a test first**, allow images, and click a "Read more" link and the closing button to confirm they work.
 
 ### Add staff photos
 Save as `firstname-lastname.jpg` (e.g. `shannon-mccracken.jpg`) in `assets/people/`. The contact page already references those filenames.
