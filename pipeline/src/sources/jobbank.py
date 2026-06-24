@@ -47,7 +47,7 @@ REGION_SEARCH_TERMS = {
     "Haldimand-Norfolk":   ["Simcoe", "Caledonia", "Dunnville", "Delhi"],
     "Halton":              ["Oakville", "Burlington", "Milton", "Georgetown", "Acton", "Halton Hills"],
 }
-PAGES_PER_TERM = 3  # ~25 jobs/page; 3 pages = ~75 candidates per term
+PAGES_PER_TERM = 5  # ~25 jobs/page; 5 pages = ~125 candidates per term (fills the 30-day window)
 
 
 def _build_search_url(term: str, page: int) -> str:

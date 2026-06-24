@@ -76,6 +76,13 @@
             <option value="college">College / Trade</option>
           </select>
           <select id="job-source" aria-label="Filter by source"></select>
+          <select id="job-date" aria-label="Filter by date posted">
+            <option value="1">Posted: past 1 day</option>
+            <option value="3">Posted: past 3 days</option>
+            <option value="7">Posted: past 7 days</option>
+            <option value="14">Posted: past 14 days</option>
+            <option value="30" selected>Posted: past 30 days</option>
+          </select>
           <label class="toggle-submitted"><input type="checkbox" id="job-submitted-only"> &#11088; Submitted only</label>
         </div>
         <p id="job-count" class="job-count" aria-live="polite"></p>
@@ -151,6 +158,6 @@
   </div>
 
   <script src="data/jobs.js?v=20260624"></script>
-  <script src="js/site.js?v=20260517-2"></script>
+  <script src="js/site.js?v=20260624"></script>
 </body>
 </html>

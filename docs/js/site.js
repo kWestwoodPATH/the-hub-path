@@ -250,6 +250,7 @@ function hubTrack(name, params) {
   const catSel = document.querySelector('#job-category');
   const eduSel = document.querySelector('#job-edu');
   const srcSel = document.querySelector('#job-source');
+  const dateSel = document.querySelector('#job-date');
   const submittedOnly = document.querySelector('#job-submitted-only');
   const empty = document.querySelector('#job-empty');
   const countEl = document.querySelector('#job-count');
@@ -323,7 +324,7 @@ function hubTrack(name, params) {
   });
 
   render();
-  [search, regionSel, catSel, eduSel, srcSel, submittedOnly].forEach(el => {
+  [search, regionSel, catSel, eduSel, srcSel, dateSel, submittedOnly].forEach(el => {
     if (!el) return;
     let debounce;
     el.addEventListener('input', () => {
@@ -359,12 +360,20 @@ function hubTrack(name, params) {
     const edu = eduSel ? eduSel.value : '';
     const src = srcSel ? srcSel.value : '';
     const subOnly = submittedOnly && submittedOnly.checked;
+    const days = dateSel ? parseInt(dateSel.value, 10) : 0;
+    let cutoff = '';
+    if (days) {
+      const d = new Date();
+      d.setDate(d.getDate() - days);
+      cutoff = d.toISOString().slice(0, 10);
+    }
     const filtered = jobs.filter(j => {
       if (region && j.region !== region) return false;
       if (cat && j.category !== cat) return false;
       if (edu && j.edu_level !== edu) return false;
       if (src && j.source !== src) return false;
       if (subOnly && !j.submitted) return false;
+      if (cutoff && j.date && j.date < cutoff) return false;
       if (q) {
         const hay = (j.title + ' ' + j.employer + ' ' + (j.location || '')).toLowerCase();
         if (!hay.includes(q)) return false;

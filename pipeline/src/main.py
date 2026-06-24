@@ -213,7 +213,7 @@ def main():
     parser = argparse.ArgumentParser(description="Weekly job report pipeline")
     parser.add_argument("--prod", action="store_true", help="Write to Hub repo (default: dry-run to local test file)")
     parser.add_argument("--push", action="store_true", help="git commit + push after writing (requires --prod)")
-    parser.add_argument("--window-days", type=int, default=14)
+    parser.add_argument("--window-days", type=int, default=30)
     parser.add_argument("--skip-jobbank", action="store_true")
     parser.add_argument("--skip-wpb", action="store_true")
     parser.add_argument("--skip-employers", action="store_true")
