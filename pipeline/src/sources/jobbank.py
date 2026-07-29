@@ -31,6 +31,7 @@ We use the id to correlate the two and parse line-by-line.
 from __future__ import annotations
 import logging
 import re
+import time
 
 from src.normalize import make_job, infer_region
 
@@ -49,10 +50,33 @@ REGION_SEARCH_TERMS = {
 }
 PAGES_PER_TERM = 5  # ~25 jobs/page; 5 pages = ~125 candidates per term (fills the 30-day window)
 
+# Firecrawl's plan caps requests per minute (~30). This used to fire as fast as
+# Firecrawl answered, which is harmless when Job Bank is slow but blows the cap
+# when it is fast: on 2026-07-29 that failed 70 of 90 scrapes and cut the board
+# to 119 jobs. Pace the calls, and retry the ones that still trip the limit.
+MIN_SCRAPE_INTERVAL_S = 2.2  # 90 scrapes ~= 27 req/min, just under the cap
+RATE_LIMIT_RETRIES = 2
+RATE_LIMIT_FALLBACK_WAIT_S = 15.0
+
+_RETRY_AFTER_RE = re.compile(r"retry after (\d+)\s*s", re.I)
+
 
 def _build_search_url(term: str, page: int) -> str:
     from urllib.parse import quote_plus
     return f"{BASE_URL}?searchstring={quote_plus(term)}&sort=D&page={page}"
+
+
+def _rate_limit_wait(err: Exception) -> float | None:
+    """Seconds to wait if `err` is a Firecrawl rate-limit error, else None.
+
+    Firecrawl states its own reset ("please retry after 13s"); trust that when
+    present, since the window is per-minute and boundary-aligned.
+    """
+    text = str(err)
+    if "rate limit" not in text.lower():
+        return None
+    m = _RETRY_AFTER_RE.search(text)
+    return float(m.group(1)) + 1 if m else RATE_LIMIT_FALLBACK_WAIT_S
 
 
 def fetch(firecrawl_client, pages_per_term: int = PAGES_PER_TERM) -> list[dict]:
@@ -66,24 +90,45 @@ def fetch(firecrawl_client, pages_per_term: int = PAGES_PER_TERM) -> list[dict]:
 
     jobs_by_id: dict[str, dict] = {}
     total_credits = 0
+    exhausted = 0
+    last_scrape = 0.0
     for region, terms in REGION_SEARCH_TERMS.items():
         for term in terms:
             for page in range(1, pages_per_term + 1):
                 url = _build_search_url(term, page)
-                total_credits += 1
                 log.info("Job Bank: %s '%s' page %d", region, term, page)
-                try:
-                    result = firecrawl_client.scrape(
-                        url,
-                        formats=["markdown"],
-                        only_main_content=True,
-                    )
-                    parsed = _parse_listing_markdown(getattr(result, "markdown", "") or "")
-                    for j in parsed:
-                        # Dedupe by URL across all searchstrings
-                        jobs_by_id[j["url"]] = j
-                except Exception as e:
-                    log.warning("    failed: %s", e)
+                for attempt in range(RATE_LIMIT_RETRIES + 1):
+                    # Only sleep for the gap Firecrawl has not already spent.
+                    gap = MIN_SCRAPE_INTERVAL_S - (time.monotonic() - last_scrape)
+                    if gap > 0:
+                        time.sleep(gap)
+                    last_scrape = time.monotonic()
+                    total_credits += 1
+                    try:
+                        result = firecrawl_client.scrape(
+                            url,
+                            formats=["markdown"],
+                            only_main_content=True,
+                        )
+                        parsed = _parse_listing_markdown(getattr(result, "markdown", "") or "")
+                        for j in parsed:
+                            # Dedupe by URL across all searchstrings
+                            jobs_by_id[j["url"]] = j
+                        break
+                    except Exception as e:
+                        wait = _rate_limit_wait(e)
+                        if wait is None:
+                            log.warning("    failed: %s", e)
+                            break
+                        if attempt == RATE_LIMIT_RETRIES:
+                            exhausted += 1
+                            log.warning("    rate-limited, out of retries: %s", url)
+                            break
+                        log.info("    rate-limited, waiting %.0fs", wait)
+                        time.sleep(wait)
+    if exhausted:
+        log.warning("Job Bank: %d page(s) lost to the rate limit — job count will be low",
+                    exhausted)
     log.info("Job Bank: %d unique in-region jobs (%d Firecrawl scrapes)",
              len(jobs_by_id), total_credits)
     return list(jobs_by_id.values())
