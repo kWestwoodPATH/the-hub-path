@@ -7,6 +7,11 @@ venv/
 data/gtfs_cache/
 data/jobs-test.js
 data/run-log.txt
+# Machine-local scrape caches. These were tracked, and the pipeline rewrites them
+# mid-run — which left the clone permanently dirty and made `git pull --rebase`
+# refuse, so the weekly push could never recover from a diverged branch.
+data/msform_cache.json
+data/employer_cache.json
 .DS_Store
 Thumbs.db
 run-log.txt
