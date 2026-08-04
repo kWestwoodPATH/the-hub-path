@@ -1,5 +1,16 @@
 window.HUB_NEWSLETTERS = [
   {
+    "title": "Summer Learning in Full Swing - theHUB's July Update",
+    "date": "2026-08-04",
+    "summary": "The weekly Summer Drop-in sessions are underway every Wednesday, plus registration for Breaking Barriers: Depression in August with Shannon McCracken, Building Resilience in September with our Occupational Therapist, occupational therapy assessments, and career exploration assessments.",
+    "page": "newsletter-2026-07.html",
+    "file": "assets/newsletters/2026-07-july.pdf",
+    "author": {
+      "name": "Kevin Westwood",
+      "photo": "assets/people/kevin-westwood.jpg"
+    }
+  },
+  {
     "title": "Breaking Barriers, All Summer - Register Now",
     "date": "2026-06-08",
     "summary": "Register now for summer PD: Breaking Barriers webinars on Deaf and Hard of Hearing job seekers, ADHD, and Depression, plus a Building Resilience webinar, the return of weekly Summer Drop-in sessions, and OT and career assessments.",

@@ -1500,7 +1500,10 @@ body.a11y-reduce-motion *::after {
   .newsletter-closer .closer-mantra, .newsletter-closer .closer-sub { color: #fff !important; }
   a[href]::after { content: " (" attr(href) ")"; font-size: 80%; color: #555; }
   a[href^="#"]::after, a[href^="javascript:"]::after { content: ""; }
-  .section, .newsletter-section, .session-card, .pullquote, .newsletter-closer { page-break-inside: avoid; }
+  /* NB: never put page-break-inside:avoid on .section - it wraps the whole
+     article, so the renderer shunts everything to page 2 and leaves page 1
+     nearly empty. Only keep small, self-contained blocks atomic. */
+  .newsletter-section, .session-card, .pullquote, .newsletter-closer { page-break-inside: avoid; }
   h1, h2, h3 { page-break-after: avoid; }
   @page { margin: 0.75in; }
 }
@@ -1520,7 +1523,8 @@ body.a11y-reduce-motion *::after {
   body.newsletter-page .newsletter-section h2 { color: #0b3954 !important; }
   body.newsletter-page .newsletter-masthead .subtitle,
   body.newsletter-page .newsletter-masthead .meta,
-  body.newsletter-page .section-author__name { color: #4a6275 !important; }
+  body.newsletter-page .section-author__name,
+  body.newsletter-page .webinar-author__name { color: #4a6275 !important; }
   body.newsletter-page .newsletter-section .section-number { color: #7cafae !important; }
   body.newsletter-page .session-card { background: #f5f7f9 !important; border-left: 4px solid #0076bf !important; }
   body.newsletter-page .session-card h3 { color: #0b3954 !important; }
@@ -1530,6 +1534,12 @@ body.a11y-reduce-motion *::after {
   body.newsletter-page .newsletter-closer .closer-sub { color: #7cafae !important; }
   /* Don't append "(url)" after links in the PDF */
   body.newsletter-page a[href]::after { content: "" !important; }
+  /* Let long sections flow across pages so the PDF has no half-empty pages.
+     Keep the atomic bits (session cards, pull quotes, the closer) unbroken,
+     and keep a section heading with its author photo and first paragraph. */
+  body.newsletter-page .newsletter-section { page-break-inside: auto !important; }
+  body.newsletter-page .section-head { page-break-inside: avoid !important; page-break-after: avoid !important; }
+  body.newsletter-page .section-divider { page-break-after: auto !important; }
 }
 
 /* Prose pages (privacy, content) */
@@ -1844,11 +1854,70 @@ body.newsletter-page { background: #faf8f3; }
   line-height: 1.2;
   color: var(--text-muted);
 }
+/* Dual-author variant: two people side by side beside a section title. Names sit
+   statically beneath each photo (not absolutely positioned like the single variant). */
+.section-author--pair {
+  width: auto;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.section-author--pair .section-author__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  width: 84px;
+}
+.section-author--pair .section-author__photo { width: 76px; height: 76px; margin: 0; }
+.section-author--pair .section-author__name { position: static; margin: 0; }
 @media (max-width: 600px) {
   .section-head { flex-direction: column-reverse; align-items: flex-start; gap: .9rem; }
   .section-author { width: auto; }
   .section-author__photo { margin: 0; }
   .section-author__name { position: static; margin: .4rem 0 0; text-align: left; }
+}
+/* Presenter photo beside an individual webinar (h3) within a section. Smaller than
+   the section-author, and the name sits statically beneath the photo. */
+.webinar-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 .75rem;
+}
+.webinar-head__text { flex: 1 1 auto; min-width: 0; }
+.webinar-head__text h3 { margin: 0; }
+.webinar-author {
+  flex: 0 0 auto;
+  width: 84px;
+  margin: 0;
+  text-align: center;
+}
+.webinar-author__photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 14px rgba(11, 57, 84, .22);
+  background: var(--capacity-sage);
+  filter: grayscale(100%);
+}
+.webinar-author__name {
+  display: block;
+  margin-top: .4rem;
+  font-size: .72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-muted);
+}
+@media (max-width: 600px) {
+  .webinar-head { flex-direction: column-reverse; align-items: flex-start; gap: .6rem; }
+  .webinar-author { width: auto; text-align: left; }
+  .webinar-author__photo { margin: 0; }
+  .webinar-author__name { text-align: left; }
 }
 .session-card {
   background: var(--bg-alt);
