@@ -1,0 +1,100 @@
+name: Pipeline status
+
+# An on-demand health check for the job board. Answers "is the board current,
+# and did the last weekly run actually work?" without scraping anything, so it
+# costs no Firecrawl credits and takes seconds.
+#
+# It deliberately compares the LIVE site against the repo: a push can land while
+# the GitHub Pages rebuild silently doesn't, which would leave visitors on stale
+# data even though everything looks green here.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Report
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+
+          STALE_AFTER_DAYS=8
+          MIN_JOBS=250
+          LIVE_URL="https://www.hub.pathemployment.com"
+
+          # ---- what the repo says ----
+          repo_date=$(sed -n 's/.*"generated": "\([0-9-]*\)".*/\1/p' docs/data/jobs.js | head -1)
+          repo_count=$(sed -n 's|^// Total jobs: \([0-9]*\).*|\1|p' docs/data/jobs.js | head -1)
+          token=$(grep -o 'data/jobs\.js?v=[0-9a-z]*' docs/jobs.html | head -1 | cut -d= -f2)
+
+          # ---- what visitors actually get ----
+          # Write to a file rather than piping into head: closing the pipe early
+          # makes curl exit 23, which pipefail would surface as a spurious failure.
+          curl -sS --max-time 30 -o live-jobs.js \
+            "$LIVE_URL/data/jobs.js?cachebust=$RANDOM$RANDOM" || true
+          live_date=$(sed -n 's/.*"generated": "\([0-9-]*\)".*/\1/p' live-jobs.js | head -1)
+          live_count=$(sed -n 's|^// Total jobs: \([0-9]*\).*|\1|p' live-jobs.js | head -1)
+
+          age=$(( ( $(date -u +%s) - $(date -u -d "${repo_date:-1970-01-01}" +%s) ) / 86400 ))
+
+          # ---- verdicts ----
+          fail=0
+          if [ "$age" -gt "$STALE_AFTER_DAYS" ]; then
+            board_verdict="🔴 stale — $age days old"; fail=1
+          else
+            board_verdict="🟢 current — $age days old"
+          fi
+
+          if [ "${repo_count:-0}" -lt "$MIN_JOBS" ]; then
+            count_verdict="🔴 short — under $MIN_JOBS"; fail=1
+          else
+            count_verdict="🟢 healthy"
+          fi
+
+          if [ "$live_date" = "$repo_date" ] && [ "$live_count" = "$repo_count" ]; then
+            pages_verdict="🟢 live site matches the repo"
+          else
+            pages_verdict="🔴 LIVE SITE IS BEHIND — repo has $repo_date/$repo_count, visitors get ${live_date:-?}/${live_count:-?}. The Pages rebuild did not run."
+            fail=1
+          fi
+
+          # ---- next scheduled run: Mondays 12:00 UTC ----
+          next=$(date -u -d "next Monday 12:00" +"%a %d %b %Y %H:%M UTC")
+
+          {
+            echo "## Job board status"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Board generated | \`$repo_date\` — $board_verdict |"
+            echo "| Jobs published | \`$repo_count\` — $count_verdict |"
+            echo "| Cache token | \`v=$token\` |"
+            echo "| Live site | $pages_verdict |"
+            echo "| Next scheduled run | $next |"
+            echo ""
+            echo "## Recent weekly runs"
+            echo ""
+            gh run list --workflow=weekly-jobs.yml --limit 8 \
+              --json conclusion,createdAt,displayTitle,url \
+              --template '{{"| When | Result | |"}}{{"\n"}}{{"|---|---|---|"}}{{"\n"}}{{range .}}{{"| "}}{{timeago .createdAt}}{{" | "}}{{if eq .conclusion "success"}}✅ success{{else}}❌ {{.conclusion}}{{end}}{{" | ["}}log{{"]("}}{{.url}}{{") |"}}{{"\n"}}{{end}}' \
+              || echo "_Could not read run history._"
+            echo ""
+            if [ "$fail" -ne 0 ]; then
+              echo "> **Something needs attention** — see the red rows above."
+            else
+              echo "> Everything looks healthy."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$fail"
