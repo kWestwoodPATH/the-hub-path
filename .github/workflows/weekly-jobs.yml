@@ -1,0 +1,64 @@
+name: Weekly job listings
+
+# Replaces the Windows Task Scheduler job that used to run pipeline/run.bat on
+# Kevin's laptop. That trigger silently skipped any Monday the machine was asleep
+# or on battery — 5 of the 8 Mondays to 2026-08-03 produced nothing at all.
+# Running here also removes the two-clone divergence that rejected the weekly push.
+
+on:
+  schedule:
+    # 12:00 UTC Mondays = 08:00 Eastern (07:00 once the clocks go back).
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-jobs
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - name: Install dependencies
+        working-directory: pipeline
+        run: pip install -r requirements.txt
+
+      # --skip-employers: the employer career-page scraper emits page images and nav
+      #   links rather than postings (disabled 2026-06-01).
+      # --skip-msform:    counsellor submissions come from an .xlsx on Kevin's OneDrive,
+      #   which a runner cannot reach. Worth ~4 jobs; pick those up with a local run.
+      # No --push here: this workflow owns the git step, so the pipeline only writes files.
+      - name: Scrape Job Bank and write jobs.js
+        working-directory: pipeline
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          HUB_REPO_PATH: ${{ github.workspace }}
+        run: python -m src.main --prod --skip-employers --skip-msform
+
+      - name: Publish
+        run: |
+          if git diff --quiet -- docs/data/jobs.js docs/jobs.html; then
+            echo "No change to publish."
+            exit 0
+          fi
+          git config user.name  "hub-pipeline"
+          git config user.email "hub-pipeline@users.noreply.github.com"
+          git add docs/data/jobs.js docs/jobs.html
+          git commit -m "Update weekly job listings ($(date -u +%Y-%m-%d))"
+          git push
+
+      - name: Summary
+        if: always()
+        run: head -2 docs/data/jobs.js >> "$GITHUB_STEP_SUMMARY"

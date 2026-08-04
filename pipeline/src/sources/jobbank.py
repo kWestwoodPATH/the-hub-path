@@ -32,6 +32,7 @@ from __future__ import annotations
 import logging
 import re
 import time
+from dataclasses import dataclass, field
 
 from src.normalize import make_job, infer_region
 
@@ -61,6 +62,19 @@ RATE_LIMIT_FALLBACK_WAIT_S = 15.0
 _RETRY_AFTER_RE = re.compile(r"retry after (\d+)\s*s", re.I)
 
 
+@dataclass
+class FetchResult:
+    """Jobs plus enough run health for the caller to decide whether to publish.
+
+    `lost` counts pages that were still rate-limited after their retries. Any
+    non-zero value means the board would come out short, which is the caller's
+    cue to keep last week's data rather than replace it with a fraction.
+    """
+    jobs: list[dict] = field(default_factory=list)
+    scrapes: int = 0
+    lost: int = 0
+
+
 def _build_search_url(term: str, page: int) -> str:
     from urllib.parse import quote_plus
     return f"{BASE_URL}?searchstring={quote_plus(term)}&sort=D&page={page}"
@@ -79,14 +93,14 @@ def _rate_limit_wait(err: Exception) -> float | None:
     return float(m.group(1)) + 1 if m else RATE_LIMIT_FALLBACK_WAIT_S
 
 
-def fetch(firecrawl_client, pages_per_term: int = PAGES_PER_TERM) -> list[dict]:
+def fetch(firecrawl_client, pages_per_term: int = PAGES_PER_TERM) -> FetchResult:
     """Scrape Job Bank using one or more city-name searchstrings per region.
 
     Jobs across all terms are deduplicated by job id.
     """
     if not firecrawl_client:
         log.warning("Firecrawl client not provided — skipping Job Bank source")
-        return []
+        return FetchResult()
 
     jobs_by_id: dict[str, dict] = {}
     total_credits = 0
@@ -131,7 +145,9 @@ def fetch(firecrawl_client, pages_per_term: int = PAGES_PER_TERM) -> list[dict]:
                     exhausted)
     log.info("Job Bank: %d unique in-region jobs (%d Firecrawl scrapes)",
              len(jobs_by_id), total_credits)
-    return list(jobs_by_id.values())
+    return FetchResult(jobs=list(jobs_by_id.values()),
+                       scrapes=total_credits,
+                       lost=exhausted)
 
 
 def _parse_listing_markdown(md: str) -> list[dict]:

@@ -112,11 +112,14 @@ def run(args) -> int:
     transit_agencies = transit.load_agencies(CONFIG_DIR)
 
     all_jobs: list[dict] = []
+    jobbank_lost = 0
 
     # ---- Source 1: Job Bank ----
     if firecrawl_client and not args.skip_jobbank:
         log.info("Source: Job Bank")
-        all_jobs.extend(jobbank.fetch(firecrawl_client))
+        jb = jobbank.fetch(firecrawl_client)
+        all_jobs.extend(jb.jobs)
+        jobbank_lost = jb.lost
 
     # ---- Source 2: Workforce Planning Boards (DISABLED) ----
     # WPB sites don't actually host job listings; they link out to other
@@ -184,6 +187,23 @@ def run(args) -> int:
     kept = valid
     log.info("After validity guard: %d (dropped %d)", len(kept), invalid)
 
+    # ---- Completeness guard ----
+    # Losing source pages used to shrink the board instead of stopping the run: on
+    # 2026-07-29 the Firecrawl rate limit cost 70 of 90 pages and a healthy 318-job
+    # board was replaced with 119, published and pushed with a zero exit code.
+    # Last week's board always beats a fraction of this week's, so bail out instead
+    # and let the non-zero exit surface the failure.
+    if not args.force:
+        problems = []
+        if jobbank_lost:
+            problems.append(f"{jobbank_lost} Job Bank page(s) lost to the rate limit")
+        if len(kept) < args.min_jobs:
+            problems.append(f"only {len(kept)} jobs (expected at least {args.min_jobs})")
+        if problems:
+            log.error("Refusing to publish — %s. The existing board is unchanged. "
+                      "Re-run, or pass --force to publish anyway.", "; ".join(problems))
+            return 1
+
     # ---- Classify + transit enrichment ----
     for j in kept:
         classify.enrich(j, cluster_rules)
@@ -214,6 +234,10 @@ def main():
     parser.add_argument("--prod", action="store_true", help="Write to Hub repo (default: dry-run to local test file)")
     parser.add_argument("--push", action="store_true", help="git commit + push after writing (requires --prod)")
     parser.add_argument("--window-days", type=int, default=30)
+    parser.add_argument("--min-jobs", type=int, default=250,
+                        help="refuse to publish below this many jobs (healthy runs are ~300)")
+    parser.add_argument("--force", action="store_true",
+                        help="publish even if the run looks incomplete")
     parser.add_argument("--skip-jobbank", action="store_true")
     parser.add_argument("--skip-wpb", action="store_true")
     parser.add_argument("--skip-employers", action="store_true")
