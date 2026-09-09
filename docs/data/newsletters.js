@@ -1,7 +1,7 @@
 window.HUB_NEWSLETTERS = [
   {
     "title": "Back to Class with The Hub",
-    "date": "2026-09-08",
+    "date": "2026-09-09",
     "summary": "Registration for Building Resilience in September, Breaking Barriers: Schizophrenia in October and Supporting Justice-Involved Job Seekers in November, plus the launch of our 2026-27 professional development catalogue, career exploration assessments with Shannon McCracken, making the most of conference season, and a job developer tip on getting ahead of holiday hiring.",
     "page": "newsletter-2026-09.html",
     "file": "assets/newsletters/2026-09-september.pdf",
