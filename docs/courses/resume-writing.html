@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The Complete Resume Course — theHUB @PATH</title>
+<title>The Complete Resume Course — The Hub @PATH</title>
 <meta name="description" content="A practical, client-focused training course on building resumes that get interviews — with deep focus on low-skill and barriered clients, and field-specific guidance for trades, IT, finance, healthcare, retail, and more.">
 <meta name="course-id" content="resume-writing">
 <meta name="course-title" content="Resume Writing">
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="theHUB @PATH">
-<meta property="og:title" content="The Complete Resume Course — theHUB @PATH">
+<meta property="og:site_name" content="The Hub @PATH">
+<meta property="og:title" content="The Complete Resume Course — The Hub @PATH">
 <meta property="og:description" content="A practical, client-focused training course for employment services staff. 16 modules, self-paced.">
 <meta property="og:url" content="https://kwestwoodpath.github.io/the-hub-path/courses/resume-writing.html">
 <meta property="og:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Complete Resume Course — theHUB @PATH">
+<meta name="twitter:title" content="The Complete Resume Course — The Hub @PATH">
 <meta name="twitter:description" content="A practical, client-focused training course for employment services staff.">
 <meta name="twitter:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -28,12 +28,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=20260517">
-<link rel="stylesheet" href="_shared/course-features.css?v=20260529">
+<link rel="stylesheet" href="../css/styles.css?v=20260908">
+<link rel="stylesheet" href="_shared/course-features.css?v=20260702">
 <script src="_shared/course-features.js?v=20260529" defer></script>
 <style>
   /* Course-specific styles — scoped to the course content area only.
-     Brand colours pulled toward theHUB palette so the course feels native to the site. */
+     Brand colours pulled toward The Hub palette so the course feels native to the site. */
   :root {
     --path-blue: #0b3954;       /* match --path-navy */
     --path-blue-light: #0076bf; /* match --hub-blue */
@@ -428,13 +428,19 @@
 <header class="site-header">
   <div class="container">
     <nav class="nav" aria-label="Primary">
-      <a class="nav__brand" href="../index.html"><img src="../assets/logos/logo-full.png" alt="theHUB @PATH logo"></a>
+      <a class="nav__brand" href="../index.html"><img src="../assets/logos/logo-full.png" alt="The Hub @PATH logo"></a>
       <button class="nav__toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu"><span></span></button>
       <ul class="nav__links" id="primary-nav">
         <li><a href="../index.html">Home</a></li>
         <li><a href="../jobs.html">Job Board</a></li>
         <li><a href="../events.html">Events</a></li>
-        <li><a href="../courses.html" aria-current="page">Courses</a></li>
+        <li class="nav__has-menu">
+          <a href="../professional-development.html" class="is-active">Courses <span class="nav__caret" aria-hidden="true"></span></a>
+          <ul class="nav__submenu">
+            <li><a href="../professional-development.html"><strong>Live Training</strong><span>Facilitated sessions for your team</span></a></li>
+            <li><a href="../courses.html"><strong>Self-Paced Courses</strong><span>Read one module at a time</span></a></li>
+          </ul>
+        </li>
         <li><a href="../newsletters.html">Newsletters</a></li>
         <li><a href="../contact.html">Contact</a></li>
       </ul>
@@ -3040,7 +3046,7 @@
     <div class="footer__grid">
       <div class="footer__brand">
         <span class="footer__brand-logo">
-          <img src="../assets/logos/logo-full.png" alt="theHUB @PATH">
+          <img src="../assets/logos/logo-full.png" alt="The Hub @PATH">
         </span>
         <p>A program of PATH Employment Services, Hamilton, Ontario.</p>
       </div>
@@ -3048,7 +3054,8 @@
         <li><a href="../index.html">Home</a></li>
         <li><a href="../jobs.html">Job Board</a></li>
         <li><a href="../events.html">Events</a></li>
-        <li><a href="../courses.html">Courses</a></li>
+        <li><a href="../professional-development.html">Live Training</a></li>
+        <li><a href="../courses.html">Self-Paced Courses</a></li>
         <li><a href="../newsletters.html">Newsletters</a></li>
       </ul></div>
       <div><h4>Connect</h4><ul class="footer__list">
@@ -3067,14 +3074,15 @@
 </footer>
 
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title">
-  <p id="cookie-title"><strong>We use cookies.</strong> theHUB uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="../privacy.html">Privacy Policy</a>.</p>
+  <p id="cookie-title"><strong>We use cookies.</strong> The Hub uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="../privacy.html">Privacy Policy</a>.</p>
   <div class="cookie-banner__actions">
     <button class="btn btn--primary" data-consent="accepted">Accept</button>
     <button class="btn btn--outline" data-consent="declined">Decline</button>
   </div>
 </div>
 
-<script src="../js/site.js?v=20260517"></script>
+<script src="../data/events.js?v=20260908"></script>
+<script src="../js/site.js?v=20260908"></script>
 
 <script>
   document.getElementById('grade')?.addEventListener('click', function () {

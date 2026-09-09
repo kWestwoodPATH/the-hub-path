@@ -1,5 +1,5 @@
 /* =============================================================================
-   theHUB course features — runtime
+   The Hub course features — runtime
    Loaded by interview-skills.html and resume-writing.html.
 
    What this gives you (zero authoring effort, automatic):
