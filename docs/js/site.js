@@ -731,7 +731,7 @@ function hubTrack(name, params) {
       eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       location: { '@type': 'VirtualLocation', url: location.href },
-      organizer: { '@type': 'Organization', name: 'The Hub @PATH', url: 'https://kwestwoodpath.github.io/the-hub-path/' }
+      organizer: { '@type': 'Organization', name: 'The Hub @PATH', url: 'https://www.hub.pathemployment.com/' }
     }));
     if (!items.length) return;
     const s = document.createElement('script');

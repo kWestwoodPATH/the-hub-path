@@ -1,0 +1,38 @@
+# This repository is PUBLIC and its docs/ folder is served at
+# www.hub.pathemployment.com. Anything committed here is published. Keep job
+# seeker (client) data and internal-only material out of it.
+
+# Dependencies
+node_modules/
+App/node_modules/
+
+# Job seeker / client data - NEVER commit. Individual case files, referral
+# reports, discharge outcomes, exported Outlook messages, KPI spreadsheets.
+Report Building/
+CAT BP/
+ocjs_report.txt
+
+# Internal-only documents (not for a public repo)
+Meeting Minutes/
+theHUB-Security-Hardening-Plan.docx
+AI-Development-Approval-*.docx
+AI-Development-Approval-*.md
+
+# Brand originals and full-resolution staff photos. Kept out deliberately:
+# the web-sized crops that belong on the site live in docs/assets/people/.
+# These stay in OneDrive, which is where their backup comes from.
+_source-materials/
+
+# Presentation-only duplicates of content that already lives in docs/
+_presentation/
+
+# Local environment
+.env
+.env.local
+*.env
+!*.env.example
+
+# OS / editor cruft
+Thumbs.db
+desktop.ini
+.DS_Store

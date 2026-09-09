@@ -1,57 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.hub.pathemployment.com/</loc>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/jobs.html</loc>
+    <loc>https://www.hub.pathemployment.com/jobs.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/events.html</loc>
+    <loc>https://www.hub.pathemployment.com/professional-development.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/events.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/courses.html</loc>
+    <loc>https://www.hub.pathemployment.com/courses.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/courses/resume-writing.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/courses/interview-skills.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/newsletters.html</loc>
+    <loc>https://www.hub.pathemployment.com/newsletters.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/contact.html</loc>
+    <loc>https://www.hub.pathemployment.com/courses/resume-writing.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/newsletter-2026-05.html</loc>
+    <loc>https://www.hub.pathemployment.com/courses/interview-skills.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/courses/caseload-frontline.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/contact.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/newsletter-2026-09.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/newsletter-2026-07.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/newsletter-2026-03.html</loc>
+    <loc>https://www.hub.pathemployment.com/newsletter-2026-06.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://kwestwoodpath.github.io/the-hub-path/privacy.html</loc>
+    <loc>https://www.hub.pathemployment.com/newsletter-2026-05.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/newsletter-2026-03.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.hub.pathemployment.com/privacy.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
