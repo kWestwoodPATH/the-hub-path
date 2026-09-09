@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Development — The Hub @PATH</title>
+  <meta name="description" content="Live Training with The Hub — facilitated professional development for employment services teams, September 2026 to March 2027. Ten practical topics, customizable to your team, each with an AI in Practice component.">
+  <!-- og:start -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Hub @PATH">
+  <meta property="og:title" content="Professional Development — The Hub @PATH">
+  <meta property="og:description" content="Live Training with The Hub — facilitated professional development for employment services teams, September 2026 to March 2027.">
+  <meta property="og:url" content="https://www.hub.pathemployment.com/professional-development.html">
+  <meta property="og:image" content="https://www.hub.pathemployment.com/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Professional Development — The Hub @PATH">
+  <meta name="twitter:description" content="Live Training with The Hub — facilitated professional development for employment services teams, September 2026 to March 2027.">
+  <meta name="twitter:image" content="https://www.hub.pathemployment.com/assets/og-image.png">
+  <!-- og:end -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0b3954">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=20260908">
+  <style>
+    /* Page-local helpers for the PD catalogue.
+       Each option is a collapsed <details> card, two per row, so the page reads
+       as a scannable menu of ten topics rather than a wall of bullet lists. */
+    .pd-grid {
+      display: grid; gap: 1.25rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+    @media (max-width: 760px) { .pd-grid { grid-template-columns: 1fr; } }
+
+    .pd-card { display: block; padding: 0; }
+    .pd-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+
+    .pd-card > summary {
+      cursor: pointer; padding: 1.1rem 1.35rem; display: flex;
+      gap: .85rem; align-items: flex-start; list-style: none;
+      border-radius: var(--radius);
+    }
+    .pd-card > summary::-webkit-details-marker { display: none; }
+    .pd-card > summary::marker { content: ""; }
+    .pd-card > summary:hover { background: rgba(0, 118, 191, .04); }
+    .pd-card > summary:focus-visible { outline: 3px solid var(--hub-blue); outline-offset: -3px; }
+    .pd-card[open] > summary { border-bottom: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; }
+
+    .pd-sum-text { flex: 1 1 auto; min-width: 0; }
+    .pd-num {
+      display: block; font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+      color: var(--spark-pink); text-transform: uppercase; margin-bottom: .2rem;
+    }
+    .pd-card summary h3 { margin: 0; font-size: 1.1rem; color: var(--hub-blue); }
+    .pd-sub { margin: .15rem 0 0; font-size: .92rem; color: var(--text-muted); font-style: italic; }
+
+    .pd-chev {
+      flex: 0 0 auto; width: 9px; height: 9px; margin-top: 1.1rem;
+      border-right: 2px solid var(--hub-blue); border-bottom: 2px solid var(--hub-blue);
+      transform: rotate(-45deg); transition: transform .15s;
+    }
+    .pd-card[open] .pd-chev { transform: rotate(45deg); }
+
+    .pd-body { padding: 1.1rem 1.35rem 1.35rem; }
+    .pd-body > p:first-child { margin-top: 0; }
+    .pd-body h4 {
+      margin: 0 0 .4rem; font-size: .78rem; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--path-navy);
+    }
+    /* Bullet lists run in two columns so the longer options stay compact. */
+    .pd-body ul {
+      margin: 0 0 1rem; padding-left: 1.1rem; font-size: .93rem;
+      columns: 2; column-gap: 1.5rem;
+    }
+    .pd-body ul li { margin-bottom: .2rem; break-inside: avoid; }
+    @media (max-width: 520px) { .pd-body ul { columns: 1; } }
+
+    .pd-ai {
+      margin: 0 0 .8rem; font-size: .89rem; background: rgba(0, 118, 191, .06);
+      border-left: 3px solid var(--hub-blue); padding: .65rem .85rem; border-radius: 4px;
+    }
+    .pd-note {
+      font-size: .87rem; background: rgba(220, 38, 87, .06);
+      border-left: 3px solid var(--spark-pink); padding: .65rem .85rem;
+      border-radius: 4px; margin: 0 0 .8rem;
+    }
+    .pd-tag { margin: 0; font-size: .91rem; font-weight: 600; color: var(--spark-pink); }
+
+    .pd-format-list { columns: 2; column-gap: 2rem; max-width: 46rem; }
+    @media (max-width: 560px) { .pd-format-list { columns: 1; } }
+    .pd-contact { display: flex; gap: 1rem; align-items: center; }
+    .pd-contact img {
+      width: 76px; height: 76px; border-radius: 50%; object-fit: cover; flex: 0 0 auto;
+      border: 3px solid var(--white); box-shadow: var(--shadow-sm);
+    }
+
+    /* Print: show every option regardless of open state. */
+    @media print {
+      .pd-grid { grid-template-columns: 1fr; }
+      .pd-card > summary { list-style: none; }
+      .pd-chev { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__brand" href="index.html"><img src="assets/logos/logo-full.png" alt="The Hub @PATH logo"></a>
+        <button class="nav__toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu"><span></span></button>
+        <ul class="nav__links" id="primary-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="jobs.html">Job Board</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li class="nav__has-menu">
+            <a href="professional-development.html" class="is-active">Courses <span class="nav__caret" aria-hidden="true"></span></a>
+            <ul class="nav__submenu">
+              <li><a href="professional-development.html"><strong>Live Training</strong><span>Facilitated sessions for your team</span></a></li>
+              <li><a href="courses.html"><strong>Self-Paced Courses</strong><span>Read one module at a time</span></a></li>
+            </ul>
+          </li>
+          <li><a href="newsletters.html">Newsletters</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section section--navy">
+      <div class="container">
+        <p class="tagline" style="color: var(--capacity-sage);">September 2026 &ndash; March 2027</p>
+        <h1>Live Training with The Hub</h1>
+        <p class="lead" style="color: rgba(255,255,255,0.85);">Employment services is complex work. Frontline professionals and managers balance job seeker needs, employment goals, documentation, caseload demands, employer relationships, and situations that don't come with a clear answer. The Hub is here to support you in that work.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">How our PD works</h2>
+        <p style="max-width: 65ch; margin: -1rem 0 1.25rem; color: var(--text-muted);">Our professional development offers practical tools, strategies, and approaches to help teams build confidence, manage workload, strengthen service, and create more capacity for meaningful job seeker support.</p>
+        <p style="max-width: 65ch; margin: 0 0 2rem; color: var(--text-muted);">Each session includes an <strong style="color: var(--path-navy);">AI in Practice</strong> component, where appropriate, to explore how AI can support the work while keeping privacy, professional judgment, and the job seeker at the centre.</p>
+
+        <h2 class="section-title" style="margin-bottom: 1rem;">Training that fits your team</h2>
+        <p style="max-width: 65ch; margin: 0 0 1.25rem; color: var(--text-muted);">Every team is different. Sessions can be customized around your needs, your experience, and whatever is emerging as a priority right now. We can offer:</p>
+        <ul class="pd-format-list">
+          <li>Short micro-learning sessions</li>
+          <li>Lunch &amp; Learns</li>
+          <li>Focused workshops</li>
+          <li>Half-day training</li>
+          <li>Longer or multi-session learning</li>
+          <li>Customized training around an emerging team need</li>
+        </ul>
+        <p style="margin-top: 1.25rem;"><strong>Tell us where your team could use support, and we can build from there.</strong></p>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="section-title">Professional development options</h2>
+        <p style="max-width: 65ch; margin: -1rem 0 2rem; color: var(--text-muted);">Ten topics for the season ahead. Click any one to see what it covers.</p>
+        <div class="pd-grid">
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 01</span>
+                <h3>Beyond &ldquo;Job Ready&rdquo;</h3>
+                <p class="pd-sub">Disability, barriers, and inclusive practice in Integrated Employment Services</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Build confidence supporting job seekers who experience disability within Integrated Employment Services.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>The social model of disability</li>
+                <li>Identifying and reducing barriers</li>
+                <li>Bias and assumptions about employability</li>
+                <li>Accommodation and disclosure</li>
+                <li>Inclusive employment planning</li>
+                <li>Job matching and retention</li>
+                <li>Collaboration with specialized services</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Explore AI for barrier identification, accommodation brainstorming, and job-fit conversations &mdash; without making assumptions about disability, capacity, or employability.</p>
+              <p class="pd-tag">Support first. Adapt where possible. Collaborate when it adds value.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 02</span>
+                <h3>Confident Conversations</h3>
+                <p class="pd-sub">Saying what needs to be said</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Sometimes you know a conversation needs to happen &mdash; you're just not sure how to start it.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Unrealistic employment goals</li>
+                <li>Challenging behaviour</li>
+                <li>Difficult feedback</li>
+                <li>Discriminatory comments</li>
+                <li>Substance use during service</li>
+                <li>Setting clear expectations</li>
+                <li>Maintaining rapport while being direct</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Use AI to practise language, role-play responses, and prepare for difficult conversations.</p>
+              <p class="pd-tag">Clear. Respectful. Human.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 03</span>
+                <h3>Professional Boundaries &amp; Role Clarity</h3>
+                <p class="pd-sub">Supporting job seekers while staying grounded in your role</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Strong relationships matter. Complex situations can also make it helpful to pause, reflect and consider what support may be useful next.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Supportive professional relationships</li>
+                <li>Clear and respectful expectations</li>
+                <li>Recognizing when consultation may help</li>
+                <li>Responding when conversations move beyond the immediate employment goal</li>
+                <li>Connecting job seekers with other supports</li>
+                <li>Collaboration with specialized and community services</li>
+                <li>Knowing when to seek supervisory or organizational guidance</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Practise respectful boundary-setting language, referral conversations, and questions to bring to consultation.</p>
+              <p class="pd-tag">Thoughtful support. Clear roles. Strong collaboration.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 04</span>
+                <h3>From Unrealistic Goal to Achievable Direction</h3>
+                <p class="pd-sub">Challenge the goal without taking away the hope</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Help job seekers explore employment goals realistically while keeping choice and ownership at the centre.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Collaborative reality testing</li>
+                <li>Labour-market information</li>
+                <li>Transferable skills</li>
+                <li>Adjacent occupations</li>
+                <li>Intermediate employment goals</li>
+                <li>Training and skill development</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Use AI to brainstorm transferable skills, adjacent occupations, and possible pathways to explore together.</p>
+              <p class="pd-tag">Keep the hope. Expand the possibilities.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 05</span>
+                <h3>Career Exploration That Leads Somewhere</h3>
+                <p class="pd-sub">Turning &ldquo;I don't know what I want to do&rdquo; into a starting point</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>When a job seeker says they don't know what they want to do, career exploration creates somewhere to begin.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Jackson Career Explorer</li>
+                <li>Ashland Interest Assessment</li>
+                <li>Choosing an appropriate assessment</li>
+                <li>Understanding results collaboratively</li>
+                <li>Interests and transferable skills</li>
+                <li>Occupational and career-pathway exploration</li>
+                <li>Moving from assessment to action</li>
+                <li>Connecting findings to the EAP</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Turn assessment themes into occupational ideas, research questions, transferable skills, and job-search terms.</p>
+              <p class="pd-tag">Explore together. Find possibilities. Build a direction.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 06</span>
+                <h3>Job Development &amp; Employer Engagement in Practice</h3>
+                <p class="pd-sub">Build relationships that create opportunities</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Build confidence in employer-facing work and strengthen relationships that can create employment opportunities.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Understanding employer needs</li>
+                <li>Building employer relationships</li>
+                <li>Presenting candidates effectively</li>
+                <li>Positioning transferable skills</li>
+                <li>Inclusive employer engagement</li>
+                <li>Customized approaches and job carving</li>
+                <li>Collaboration between Case Management and Job Development</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Use AI to prepare employer outreach, candidate value statements, questions, and conversation practice.</p>
+              <p class="pd-tag">Build relationships that create opportunities.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 07</span>
+                <h3>The Art of the Case Note</h3>
+                <p class="pd-sub">Documenting the work without writing a novel</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Make documentation clearer, more purposeful, and easier to manage.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>What belongs in a case note</li>
+                <li>What can be left out</li>
+                <li>Clear and objective language</li>
+                <li>Strengths-based documentation</li>
+                <li>Documenting difficult situations</li>
+                <li>Connecting notes to purposeful service</li>
+                <li>Capturing the work without over-documenting</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Using fictional or approved de-identified examples, explore how AI can improve clarity, organization, and conciseness.</p>
+              <p class="pd-note"><strong>Privacy matters.</strong> Identifiable job seeker information should not be entered into an unapproved AI tool.</p>
+              <p class="pd-tag">Clear. Concise. Useful.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 08</span>
+                <h3>Managing Higher-Volume Caseloads</h3>
+                <p class="pd-sub">Managing time, workload, and mental load</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>This session is not about asking staff to do more. It is about managing time, workload and mental load so there is more capacity to be present and purposeful with job seekers.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Caseload prioritization</li>
+                <li>Time management and time blocking</li>
+                <li>Planning your day and week</li>
+                <li>Managing competing priorities</li>
+                <li>Reducing mental load</li>
+                <li>Appointment planning</li>
+                <li>Follow-up versus full appointments</li>
+                <li>Group case management and group service</li>
+                <li>Administrative workflow</li>
+                <li>Identifying who needs more individualized support</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Use AI to support workflows, reusable resources, appointment agendas, checklists, and group-service materials.</p>
+              <p class="pd-tag">Manage the workload. Build capacity. Create more room for meaningful job seeker support.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 09</span>
+                <h3>Inclusive &amp; Adaptive Practice</h3>
+                <p class="pd-sub">Creating services where more job seekers can engage and succeed</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>People communicate, learn, process information and experience services differently. Explore practical ways to make Employment Services more accessible, responsive and culturally safe.</p>
+              <h4>Explore</h4>
+              <ul>
+                <li>Communication and learning differences</li>
+                <li>Plain-language communication</li>
+                <li>Breaking larger tasks into manageable steps</li>
+                <li>Reducing information overload</li>
+                <li>Appointment structure and pace</li>
+                <li>Literacy and language differences</li>
+                <li>Cultural safety and cultural humility</li>
+                <li>Bias, power, and assumptions</li>
+                <li>Building trust across different lived experiences</li>
+              </ul>
+              <p class="pd-ai"><strong>AI in Practice:</strong> Explore plain-language tools, step-by-step guides, and accessible formats &mdash; while also examining AI bias, cultural assumptions, and accuracy.</p>
+              <p class="pd-tag">Adapt the service so more people can participate successfully.</p>
+            </div>
+          </details>
+
+          <details class="card pd-card">
+            <summary>
+              <span class="pd-sum-text">
+                <span class="pd-num">Option 10</span>
+                <h3>AI in Employment Services</h3>
+                <p class="pd-sub">Practical tools for supporting job seekers</p>
+              </span>
+              <span class="pd-chev" aria-hidden="true"></span>
+            </summary>
+            <div class="pd-body">
+              <p>Wondering where AI can be useful in employment services? Come explore it with us.</p>
+              <h4>Try AI for</h4>
+              <ul>
+                <li>Job-description analysis</li>
+                <li>Transferable skills</li>
+                <li>R&eacute;sum&eacute; tailoring</li>
+                <li>Interview preparation</li>
+                <li>Career exploration</li>
+                <li>Job-search strategy</li>
+                <li>Employer outreach</li>
+                <li>Job seeker guides</li>
+                <li>Planning and organization</li>
+              </ul>
+              <h4>We will also explore</h4>
+              <ul>
+                <li>Privacy and confidentiality</li>
+                <li>Accuracy and hallucinations</li>
+                <li>Bias</li>
+                <li>Reviewing AI-generated content</li>
+                <li>What should not be entered into AI tools</li>
+                <li>Keeping the job seeker involved</li>
+                <li>When professional judgment needs to lead</li>
+              </ul>
+              <p class="pd-tag">The goal isn't to replace what you do. It's to give you another useful tool.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">How can we help?</h2>
+        <p style="max-width: 65ch; margin: -1rem 0 1.25rem; color: var(--text-muted);">You know your needs best. Are you noticing any of these?</p>
+        <div class="grid">
+          <article class="card">
+            <p style="margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--path-navy); font-style: italic;">&ldquo;We keep getting stuck here.&rdquo;</p>
+          </article>
+          <article class="card">
+            <p style="margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--path-navy); font-style: italic;">&ldquo;Our team could use more confidence with this.&rdquo;</p>
+          </article>
+          <article class="card">
+            <p style="margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--path-navy); font-style: italic;">&ldquo;I'd like another way of approaching this.&rdquo;</p>
+          </article>
+        </div>
+        <p style="max-width: 65ch; margin: 1.5rem 0 0;">That's enough to start the conversation. The Hub supports the network through professional development, consultation, practical tools, shared strategies, and another perspective when something feels complex or stuck.</p>
+
+        <h3 style="margin: 2.5rem 0 .75rem;">Flexible by design</h3>
+        <p style="max-width: 65ch; margin: 0 0 1rem;">Choose one of the topics above, combine topics into a longer learning experience, request a short Lunch &amp; Learn, or connect with us about something your team is encountering that isn't on this list. We're happy to customize the learning around what your team needs.</p>
+
+        <h3 style="margin: 2.5rem 0 .75rem;">Our goal is simple</h3>
+        <ul style="max-width: 65ch;">
+          <li>Support the people doing the work.</li>
+          <li>Build capacity across the network.</li>
+          <li>Strengthen the thoughtful use of specialized services.</li>
+          <li>Create more room for meaningful job seeker support.</li>
+          <li>Amplify the success of job seekers.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="connect">
+      <div class="container">
+        <h2 class="section-title">Contact Your Site's CSC</h2>
+        <p style="max-width: 65ch; margin: -1rem 0 2rem; color: var(--text-muted);">Training is arranged through the Career Services Consultant responsible for your site. Get in touch with yours and let them know where your team could use support &mdash; they'd be happy to explore what might work.</p>
+        <div class="grid">
+          <article class="card">
+            <div class="pd-contact">
+              <img src="assets/people/mateja-mihelcic.jpg" alt="Mateja Mihelcic">
+              <div>
+                <h3 style="margin: 0 0 .15rem;">Mateja Mihelcic</h3>
+                <p style="margin: 0 0 .35rem; font-size: .92rem; color: var(--text-muted);">Career Services Consultant</p>
+                <p style="margin: 0; font-size: .92rem;">905.528.6611 ext. 245<br>
+                <a href="mailto:Mateja.Mihelcic@PathEmployment.com?subject=Professional%20development%20for%20our%20team">Mateja.Mihelcic@PathEmployment.com</a></p>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="pd-contact">
+              <img src="assets/people/shannon-mccracken.jpg" alt="Shannon McCracken">
+              <div>
+                <h3 style="margin: 0 0 .15rem;">Shannon McCracken</h3>
+                <p style="margin: 0 0 .35rem; font-size: .92rem; color: var(--text-muted);">Career Services Consultant</p>
+                <p style="margin: 0; font-size: .92rem;">905.528.6611 ext. 234<br>
+                <a href="mailto:Shannon.McCracken@PathEmployment.com?subject=Professional%20development%20for%20our%20team">Shannon.McCracken@PathEmployment.com</a></p>
+              </div>
+            </div>
+          </article>
+        </div>
+        <p style="margin-top: 1.75rem;"><a class="btn btn--accent" href="mailto:Kevin.Westwood@PathEmployment.com?subject=Which%20CSC%20covers%20my%20site%3F">Not sure who your site's CSC is? Connect with Kevin Westwood</a></p>
+      </div>
+    </section>
+
+    <section class="mantra">
+      <blockquote>Everything is figure-outable.</blockquote>
+      <p>You don't have to figure it out alone.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <span class="footer__brand-logo">
+            <img src="assets/logos/logo-full.png" alt="The Hub @PATH">
+          </span>
+          <p>A program of PATH Employment Services, Hamilton, Ontario.</p>
+        </div>
+        <div><h4>Explore</h4><ul class="footer__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="jobs.html">Job Board</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="newsletters.html">Newsletters</a></li>
+        </ul></div>
+        <div><h4>Connect</h4><ul class="footer__list">
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="https://pathemployment.com" target="_blank" rel="noopener">PATH Employment</a></li>
+        </ul></div>
+        <div><h4>Legal</h4><ul class="footer__list"><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; <span id="year"></span> PATH Employment Services. Building Capacity, Amplifying Success.</span>
+        <span>905.528.6611</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title">
+    <p id="cookie-title"><strong>We use cookies.</strong> The Hub uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <div class="cookie-banner__actions">
+      <button class="btn btn--primary" data-consent="accepted">Accept</button>
+      <button class="btn btn--outline" data-consent="declined">Decline</button>
+    </div>
+  </div>
+
+  <script src="data/events.js?v=20260908"></script>
+  <script src="js/site.js?v=20260908"></script>
+</body>
+</html>

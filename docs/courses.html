@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Courses — theHUB @PATH</title>
-  <meta name="description" content="Self-paced training courses for front-line employment services staff from theHUB @PATH — practical, Ontario-grounded professional development you can use with your next client.">
+  <title>Courses — The Hub @PATH</title>
+  <meta name="description" content="Self-paced training courses for front-line employment services staff from The Hub @PATH — practical, Ontario-grounded professional development you can use with your next client.">
   <!-- og:start -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="theHUB @PATH">
-  <meta property="og:title" content="Courses — theHUB @PATH">
-  <meta property="og:description" content="Self-paced training courses for front-line employment services staff from theHUB @PATH.">
+  <meta property="og:site_name" content="The Hub @PATH">
+  <meta property="og:title" content="Courses — The Hub @PATH">
+  <meta property="og:description" content="Self-paced training courses for front-line employment services staff from The Hub @PATH.">
   <meta property="og:url" content="https://kwestwoodpath.github.io/the-hub-path/courses.html">
   <meta property="og:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Courses — theHUB @PATH">
-  <meta name="twitter:description" content="Self-paced training courses for front-line employment services staff from theHUB @PATH.">
+  <meta name="twitter:title" content="Courses — The Hub @PATH">
+  <meta name="twitter:description" content="Self-paced training courses for front-line employment services staff from The Hub @PATH.">
   <meta name="twitter:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
   <!-- og:end -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260517">
+  <link rel="stylesheet" href="css/styles.css?v=20260908">
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to main content</a>
@@ -36,13 +36,19 @@
   <header class="site-header">
     <div class="container">
       <nav class="nav" aria-label="Primary">
-        <a class="nav__brand" href="index.html"><img src="assets/logos/logo-full.png" alt="theHUB @PATH logo"></a>
+        <a class="nav__brand" href="index.html"><img src="assets/logos/logo-full.png" alt="The Hub @PATH logo"></a>
         <button class="nav__toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu"><span></span></button>
         <ul class="nav__links" id="primary-nav">
           <li><a href="index.html">Home</a></li>
           <li><a href="jobs.html">Job Board</a></li>
           <li><a href="events.html">Events</a></li>
-          <li><a href="courses.html" aria-current="page">Courses</a></li>
+          <li class="nav__has-menu">
+            <a href="professional-development.html" class="is-active">Courses <span class="nav__caret" aria-hidden="true"></span></a>
+            <ul class="nav__submenu">
+              <li><a href="professional-development.html"><strong>Live Training</strong><span>Facilitated sessions for your team</span></a></li>
+              <li><a href="courses.html"><strong>Self-Paced Courses</strong><span>Read one module at a time</span></a></li>
+            </ul>
+          </li>
           <li><a href="newsletters.html">Newsletters</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -95,6 +101,15 @@
       </div>
     </section>
 
+    <section class="section section--sage">
+      <div class="container">
+        <p class="tagline">Live Training with The Hub &nbsp;&middot;&nbsp; September 2026 &ndash; March 2027</p>
+        <h2 class="section-title" style="margin-bottom: 1rem;">Prefer live training for your whole team?</h2>
+        <p style="max-width: 62ch; margin: 0 0 1.5rem;">The courses above are self-paced. We also run <strong>facilitated professional development</strong> for teams &mdash; ten practical topics covering inclusive practice, confident conversations, case notes, higher-volume caseloads, employer engagement, and AI in employment services. Every session can be customized as a micro-learning session, Lunch &amp; Learn, workshop, or half-day, and each includes an AI in Practice component.</p>
+        <p style="margin: 0;"><a class="btn btn--accent" href="professional-development.html">See the full PD catalogue</a></p>
+      </div>
+    </section>
+
     <section class="section section--alt">
       <div class="container">
         <h2 class="section-title">How these courses work</h2>
@@ -125,7 +140,7 @@
       <div class="footer__grid">
         <div class="footer__brand">
           <span class="footer__brand-logo">
-            <img src="assets/logos/logo-full.png" alt="theHUB @PATH">
+            <img src="assets/logos/logo-full.png" alt="The Hub @PATH">
           </span>
           <p>A program of PATH Employment Services, Hamilton, Ontario.</p>
         </div>
@@ -133,7 +148,8 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="jobs.html">Job Board</a></li>
           <li><a href="events.html">Events</a></li>
-          <li><a href="courses.html">Courses</a></li>
+          <li><a href="professional-development.html">Live Training</a></li>
+          <li><a href="courses.html">Self-Paced Courses</a></li>
           <li><a href="newsletters.html">Newsletters</a></li>
         </ul></div>
         <div><h4>Connect</h4><ul class="footer__list">
@@ -152,13 +168,14 @@
   </footer>
 
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title">
-    <p id="cookie-title"><strong>We use cookies.</strong> theHUB uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <p id="cookie-title"><strong>We use cookies.</strong> The Hub uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="privacy.html">Privacy Policy</a>.</p>
     <div class="cookie-banner__actions">
       <button class="btn btn--primary" data-consent="accepted">Accept</button>
       <button class="btn btn--outline" data-consent="declined">Decline</button>
     </div>
   </div>
 
-  <script src="js/site.js?v=20260517"></script>
+  <script src="data/events.js?v=20260908"></script>
+  <script src="js/site.js?v=20260908"></script>
 </body>
 </html>

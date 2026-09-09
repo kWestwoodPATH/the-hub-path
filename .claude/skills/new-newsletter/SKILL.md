@@ -1,11 +1,11 @@
 ---
 name: new-newsletter
-description: Publish a new theHUB @PATH newsletter issue. Builds the web version (docs/newsletter-YYYY-MM.html) with a circular author photo beside each authored section, adds the archive entry, posts any sessions/events announced in the issue to the Events page, generates the colour PDF, and produces the matching emailable teaser in newsletter-email/. Use when the user wants to add, publish, or set up a new newsletter issue, or drops in newsletter content for an issue.
+description: Publish a new The Hub @PATH newsletter issue. Builds the web version (docs/newsletter-YYYY-MM.html) with a circular author photo beside each authored section, adds the archive entry, posts any sessions/events announced in the issue to the Events page, generates the colour PDF, and produces the matching emailable teaser in newsletter-email/. Use when the user wants to add, publish, or set up a new newsletter issue, or drops in newsletter content for an issue.
 ---
 
 # Publish a newsletter issue (web + email)
 
-You are setting up a new issue of **theHUB @PATH** newsletter. One source of content becomes
+You are setting up a new issue of **The Hub @PATH** newsletter. One source of content becomes
 **two outputs**: a full web page on the site, and a short emailable "teaser" that links to it.
 
 The live site is the static `docs/` folder (GitHub Pages, domain `https://www.hub.pathemployment.com`).

@@ -1,4 +1,4 @@
-// theHUB @PATH - site interactions
+// The Hub @PATH - site interactions
 // Helper: send GA event if gtag is loaded (only after cookie consent)
 function hubTrack(name, params) {
   try { if (typeof window.gtag === 'function') window.gtag('event', name, params || {}); } catch (e) {}
@@ -518,7 +518,7 @@ function hubTrack(name, params) {
         '@context': 'https://schema.org/',
         '@type': 'JobPosting',
         title: j.title,
-        description: (j.tip_resume ? j.tip_resume + ' ' : '') + 'Apply through our job board at theHUB @PATH.',
+        description: (j.tip_resume ? j.tip_resume + ' ' : '') + 'Apply through our job board at The Hub @PATH.',
         datePosted: j.date || undefined,
         validThrough: valid || undefined,
         employmentType: 'FULL_TIME',
@@ -731,7 +731,7 @@ function hubTrack(name, params) {
       eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       location: { '@type': 'VirtualLocation', url: location.href },
-      organizer: { '@type': 'Organization', name: 'theHUB @PATH', url: 'https://kwestwoodpath.github.io/the-hub-path/' }
+      organizer: { '@type': 'Organization', name: 'The Hub @PATH', url: 'https://kwestwoodpath.github.io/the-hub-path/' }
     }));
     if (!items.length) return;
     const s = document.createElement('script');
@@ -784,6 +784,280 @@ function hubTrack(name, params) {
     if (!a) return;
     const href = a.href || '';
     if (href.includes('calendly.com')) hubTrack('calendly_click', { url: href });
-    else if (href.includes('forms.office.com')) hubTrack('form_open', { url: href });
+    // Registration links come through on both MS Forms hostnames.
+    else if (href.includes('forms.office.com') || href.includes('forms.cloud.microsoft')) hubTrack('form_open', { url: href });
   });
+})();
+
+// ---- "Happening now" live-session banner ----
+// On the day of a session, drops a red band above the header with the Zoom
+// link. Driven entirely by data/events.js, so there is nothing to switch on
+// or off by hand - add the session with a zoomUrl and the banner takes care
+// of itself. Requires data/events.js to be loaded on the page.
+(function () {
+  const data = window.HUB_EVENTS || [];
+  if (!data.length || !document.body) return;
+
+  const LEAD_MIN = 15;    // banner goes "live" this many minutes before start
+  const RUN_MIN = 90;     // ...and stops this many minutes after start
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
+  function parseLocal(iso) {
+    const p = String(iso).split('-').map(Number);
+    return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+  }
+  // "1:00 PM" -> minutes past midnight, or null when no time is set.
+  function parseTime(t) {
+    const m = String(t || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!m) return null;
+    let h = parseInt(m[1], 10) % 12;
+    if (m[3].toUpperCase() === 'PM') h += 12;
+    return h * 60 + parseInt(m[2], 10);
+  }
+  function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+
+  // Which sessions land on today? Handles weekly series as well as single dates.
+  const todays = data.filter(e => {
+    if (!e || !e.date) return false;
+    const start = parseLocal(e.date);
+    if (e.weeklyUntil) {
+      const until = parseLocal(e.weeklyUntil);
+      return today >= start && today <= until && today.getDay() === start.getDay();
+    }
+    return sameDay(start, today);
+  });
+  if (!todays.length) return;
+
+  // Prefer a session that is live right now; otherwise the next one still to
+  // come today. Anything already finished is ignored.
+  let pick = null, phase = '';
+  for (const e of todays) {
+    const t = parseTime(e.time);
+    if (t === null) { if (!pick) { pick = e; phase = 'today'; } continue; }
+    if (nowMin >= t - LEAD_MIN && nowMin <= t + RUN_MIN) { pick = e; phase = 'live'; break; }
+    if (nowMin < t - LEAD_MIN && (!pick || phase !== 'today')) { pick = e; phase = 'soon'; }
+  }
+  if (!pick) return;
+
+  const key = 'hub-live-banner:' + pick.date + ':' + (pick.title || '') + ':' + phase;
+  try { if (sessionStorage.getItem(key) === 'dismissed') return; } catch (e) {}
+
+  // Reuse the nav's own Events link so the fallback path is right from any
+  // folder depth (the course pages sit one level down).
+  let eventsHref = 'events.html';
+  const navEvents = document.querySelector('.nav__links a[href$="events.html"]');
+  if (navEvents) eventsHref = navEvents.getAttribute('href');
+
+  const zoom = pick.zoomUrl || '';
+  const title = pick.title || 'Session';
+  let text, ctaLabel, ctaHref, ctaExt;
+
+  if (phase === 'live') {
+    text = '<span class="live-banner__dot" aria-hidden="true"></span><strong>Happening now!</strong> ' +
+           (zoom ? 'Join us on Zoom' : 'Check your registration email for the Zoom link') +
+           ' &mdash; <span class="live-banner__title">' + esc(title) + '</span>';
+    ctaLabel = zoom ? 'Join us on Zoom' : 'Session details';
+  } else {
+    text = '<strong>Happening today' + (pick.time ? ' at ' + esc(pick.time) : '') + '</strong> &mdash; ' +
+           '<span class="live-banner__title">' + esc(title) + '</span>';
+    ctaLabel = zoom ? 'Join us on Zoom' : 'Session details';
+  }
+  if (zoom) { ctaHref = zoom; ctaExt = true; } else { ctaHref = eventsHref; ctaExt = false; }
+
+  const el = document.createElement('div');
+  el.className = 'live-banner';
+  el.setAttribute('role', 'region');
+  el.setAttribute('aria-label', phase === 'live' ? 'Session happening now' : 'Session happening today');
+  el.innerHTML =
+    '<div class="container live-banner__inner">' +
+      '<span class="live-banner__text">' + text + '</span>' +
+      '<a class="live-banner__cta" href="' + escAttr(ctaHref) + '"' +
+        (ctaExt ? ' target="_blank" rel="noopener"' : '') + '>' + esc(ctaLabel) + ' &rarr;</a>' +
+    '</div>' +
+    '<button class="live-banner__close" type="button" aria-label="Dismiss this notice">&times;</button>';
+
+  const header = document.querySelector('.site-header');
+  if (header && header.parentNode) header.parentNode.insertBefore(el, header);
+  else document.body.insertBefore(el, document.body.firstChild);
+
+  el.querySelector('.live-banner__close').addEventListener('click', () => {
+    el.remove();
+    try { sessionStorage.setItem(key, 'dismissed'); } catch (e) {}
+  });
+  el.querySelector('.live-banner__cta').addEventListener('click', () => {
+    hubTrack('live_banner_click', { session: title, phase: phase });
+  });
+})();
+
+// ---- Home hero carousel ----
+// The first slides are authored in index.html so the hero still reads
+// correctly with no JavaScript. This appends the dynamic ones - the next
+// upcoming sessions and the latest newsletter - then reveals the controls
+// and wires up dots, arrows, autoplay and keyboard control.
+(function () {
+  const track = document.querySelector('#hero-track');
+  const nav = document.querySelector('#hero-nav');
+  const dotsEl = document.querySelector('#hero-dots');
+  const playBtn = document.querySelector('#hero-play');
+  if (!track || !nav || !dotsEl) return;
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
+  function parseLocal(iso) {
+    const p = String(iso).split('-').map(Number);
+    return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+  }
+  function isExt(url) { return url && /^https?:/.test(url); }
+  // Prefer ending on a whole sentence; fall back to a word boundary + ellipsis
+  // so a slide never trails off mid-clause ("...you're not…").
+  function trim(s, n) {
+    const t = String(s || '').trim();
+    if (t.length <= n) return t;
+    const window = t.slice(0, n + 1);
+    const stop = Math.max(window.lastIndexOf('. '), window.lastIndexOf('! '), window.lastIndexOf('? '));
+    if (stop > n * 0.5) return t.slice(0, stop + 1);
+    const cut = window.lastIndexOf(' ');
+    return t.slice(0, cut > 0 ? cut : n) + '…';
+  }
+
+  // ----- Slides for the next upcoming sessions -----
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const upcoming = (window.HUB_EVENTS || [])
+    .filter(e => e && e.date)
+    .map(e => Object.assign({}, e, {
+      _d: parseLocal(e.date),
+      _until: e.weeklyUntil ? parseLocal(e.weeklyUntil) : null
+    }))
+    .filter(e => (e._until || e._d) >= today)
+    .sort((a, b) => a._d - b._d);
+
+  // One slide per session title, so a webinar offered on two dates shows once.
+  const seen = {};
+  const sessions = [];
+  upcoming.forEach(e => {
+    if (seen[e.title]) return;
+    seen[e.title] = true;
+    sessions.push(e);
+  });
+
+  sessions.slice(0, 2).forEach(e => {
+    const reg = e.registerUrl || 'events.html';
+    const ext = isExt(reg);
+    const bits = [];
+    if (e.time) bits.push(e.time);
+    if (e.location) bits.push(e.location);
+    track.insertAdjacentHTML('beforeend',
+      '<div class="hero-slide" role="group" aria-roledescription="slide" aria-label="' + escAttr(e.title) + '">' +
+        '<div class="hero__inner"><div>' +
+          '<p class="tagline hero-eyebrow">Coming up &nbsp;&middot;&nbsp; ' +
+            esc(e._d.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' })) + '</p>' +
+          '<p class="hero-slide__title">' + esc(e.title) + '</p>' +
+          '<p>' + esc(trim(e.description, 200)) + '</p>' +
+          '<div class="hero__cta">' +
+            '<a class="btn btn--accent" href="' + escAttr(reg) + '"' +
+              (ext ? ' target="_blank" rel="noopener"' : '') + '>Register</a>' +
+            '<a class="btn btn--ghost" href="events.html">All events</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="hero__logo"><div class="hero-datecard">' +
+          '<span class="m">' + esc(e._d.toLocaleDateString('en-CA', { month: 'short' }).toUpperCase()) + '</span>' +
+          '<span class="d">' + e._d.getDate() + '</span>' +
+          (bits.length ? '<span class="t">' + esc(bits.join(' · ')) + '</span>' : '') +
+        '</div></div>' +
+      '</div></div>');
+  });
+
+  // ----- Slide for the latest newsletter -----
+  const latest = (window.HUB_NEWSLETTERS || []).slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+  if (latest && latest.page) {
+    const when = new Date(latest.date).toLocaleDateString('en-CA', { month: 'long', year: 'numeric' });
+    track.insertAdjacentHTML('beforeend',
+      '<div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Latest newsletter">' +
+        '<div class="hero__inner"><div>' +
+          '<p class="tagline hero-eyebrow">Latest issue &nbsp;&middot;&nbsp; ' + esc(when) + '</p>' +
+          '<p class="hero-slide__title">' + esc(latest.title) + '</p>' +
+          '<p>' + esc(trim(latest.summary, 200)) + '</p>' +
+          '<div class="hero__cta">' +
+            '<a class="btn btn--accent" href="' + escAttr(latest.page) + '">Read the issue</a>' +
+            '<a class="btn btn--ghost" href="newsletters.html">Past issues</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="hero__logo"><img src="assets/logos/logo-full.png" alt=""></div>' +
+      '</div></div>');
+  }
+
+  // ----- Controls -----
+  const slides = Array.prototype.slice.call(track.querySelectorAll('.hero-slide'));
+  if (slides.length < 2) return;
+
+  slides.forEach((s, n) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'hero-dot';
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', 'Slide ' + (n + 1) + ' of ' + slides.length);
+    dot.setAttribute('aria-selected', n === 0 ? 'true' : 'false');
+    dot.addEventListener('click', () => { show(n); pause(); });
+    dotsEl.appendChild(dot);
+  });
+  const dots = Array.prototype.slice.call(dotsEl.children);
+  nav.hidden = false;
+
+  // Respect both the OS preference and The Hub's own "Reduce motion" toggle.
+  const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    || document.body.classList.contains('a11y-reduce-motion');
+  let i = 0, timer = null, paused = false;
+
+  function show(n) {
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, k) => {
+      const on = k === i;
+      s.classList.toggle('is-active', on);
+      s.setAttribute('aria-hidden', on ? 'false' : 'true');
+    });
+    dots.forEach((d, k) => d.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+  }
+  function step(d) { show(i + d); }
+  function play() { if (paused || timer) return; timer = window.setInterval(() => step(1), 6500); }
+  function halt() { if (timer) { window.clearInterval(timer); timer = null; } }
+  function pause() { paused = true; halt(); syncPlayBtn(); }
+  function resume() { paused = false; syncPlayBtn(); play(); }
+  function syncPlayBtn() {
+    if (!playBtn) return;
+    playBtn.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
+    playBtn.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+  }
+
+  nav.querySelectorAll('[data-hero-dir]').forEach(b => {
+    b.addEventListener('click', () => { step(Number(b.getAttribute('data-hero-dir')) || 1); pause(); });
+  });
+  if (playBtn) playBtn.addEventListener('click', () => (paused ? resume() : pause()));
+
+  // Hovering or tabbing into the hero holds the current slide.
+  const host = track.parentNode;
+  host.addEventListener('mouseenter', halt);
+  host.addEventListener('mouseleave', () => { if (!paused) play(); });
+  host.addEventListener('focusin', halt);
+  host.addEventListener('focusout', () => { if (!paused) play(); });
+  host.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { step(-1); pause(); }
+    else if (e.key === 'ArrowRight') { step(1); pause(); }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) halt();
+    else if (!paused) play();
+  });
+
+  show(0);
+  if (reduce) paused = true;          // no autoplay, but Play still works
+  syncPlayBtn();
+  play();
 })();

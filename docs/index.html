@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>theHUB @PATH — Building Capacity, Amplifying Success</title>
-  <meta name="description" content="theHUB @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
+  <title>The Hub @PATH — Building Capacity, Amplifying Success</title>
+  <meta name="description" content="The Hub @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
   <!-- og:start -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="theHUB @PATH">
-  <meta property="og:title" content="theHUB @PATH — Building Capacity, Amplifying Success">
-  <meta property="og:description" content="theHUB @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
+  <meta property="og:site_name" content="The Hub @PATH">
+  <meta property="og:title" content="The Hub @PATH — Building Capacity, Amplifying Success">
+  <meta property="og:description" content="The Hub @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
   <meta property="og:url" content="https://kwestwoodpath.github.io/the-hub-path/">
   <meta property="og:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="theHUB @PATH — Building Capacity, Amplifying Success">
-  <meta name="twitter:description" content="theHUB @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
+  <meta name="twitter:title" content="The Hub @PATH — Building Capacity, Amplifying Success">
+  <meta name="twitter:description" content="The Hub @PATH builds capacity and amplifies success for front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy support.">
   <meta name="twitter:image" content="https://kwestwoodpath.github.io/the-hub-path/assets/og-image.png">
   <!-- og:end -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -28,16 +28,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260517">
+  <link rel="stylesheet" href="css/styles.css?v=20260908">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "theHUB @PATH",
-    "alternateName": "the Hub at PATH Employment Services",
+    "name": "The Hub @PATH",
+    "alternateName": "The Hub at PATH Employment Services",
     "url": "https://kwestwoodpath.github.io/the-hub-path/",
     "logo": "https://kwestwoodpath.github.io/the-hub-path/assets/logos/logo-full.png",
-    "description": "theHUB @PATH supports front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy services.",
+    "description": "The Hub @PATH supports front-line employment professionals across Southern Ontario through case consultation, professional development, and occupational therapy services.",
     "parentOrganization": { "@type": "Organization", "name": "PATH Employment Services", "url": "https://pathemployment.com" },
     "areaServed": { "@type": "Place", "name": "Southern Ontario" },
     "contactPoint": [
@@ -53,7 +53,7 @@
     <div class="container">
       <nav class="nav" aria-label="Primary">
         <a class="nav__brand" href="index.html">
-          <img src="assets/logos/logo-full.png" alt="theHUB @PATH logo">
+          <img src="assets/logos/logo-full.png" alt="The Hub @PATH logo">
         </a>
         <button class="nav__toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
           <span></span>
@@ -62,7 +62,13 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="jobs.html">Job Board</a></li>
           <li><a href="events.html">Events</a></li>
-          <li><a href="courses.html">Courses</a></li>
+          <li class="nav__has-menu">
+            <a href="professional-development.html">Courses <span class="nav__caret" aria-hidden="true"></span></a>
+            <ul class="nav__submenu">
+              <li><a href="professional-development.html"><strong>Live Training</strong><span>Facilitated sessions for your team</span></a></li>
+              <li><a href="courses.html"><strong>Self-Paced Courses</strong><span>Read one module at a time</span></a></li>
+            </ul>
+          </li>
           <li><a href="newsletters.html">Newsletters</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -71,26 +77,58 @@
   </header>
 
   <main id="main">
-    <section class="hero">
-      <div class="container hero__inner">
-        <div>
-          <p class="tagline" style="color: var(--capacity-sage);">Building Capacity, Amplifying Success</p>
-          <h1>You don't have to figure it out alone.</h1>
-          <p>theHUB @PATH supports front-line employment professionals with practical guidance, collaboration, and fresh perspective &mdash; from tough jobseeker situations to workflow improvements and everything in between.</p>
-          <div class="hero__cta">
-            <a class="btn btn--accent" href="contact.html">Connect with us</a>
-            <a class="btn btn--ghost" href="#offers">What we offer</a>
+    <section class="hero" aria-roledescription="carousel" aria-label="What's happening at The Hub">
+      <div class="container">
+        <div class="hero-track" id="hero-track">
+
+          <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="The Hub @PATH">
+            <div class="hero__inner">
+              <div>
+                <p class="tagline hero-eyebrow">Building Capacity, Amplifying Success</p>
+                <h1>You don't have to figure it out alone.</h1>
+                <p>The Hub @PATH supports front-line employment professionals with practical guidance, collaboration, and fresh perspective &mdash; from tough jobseeker situations to workflow improvements and everything in between.</p>
+                <div class="hero__cta">
+                  <a class="btn btn--accent" href="contact.html">Connect with us</a>
+                  <a class="btn btn--ghost" href="#offers">What we offer</a>
+                </div>
+              </div>
+              <div class="hero__logo">
+                <img src="assets/logos/logo-full.png" alt="">
+              </div>
+            </div>
           </div>
+
+          <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Live Training with The Hub">
+            <div class="hero__inner">
+              <div>
+                <p class="tagline hero-eyebrow">Live Training &nbsp;&middot;&nbsp; September 2026 &ndash; March 2027</p>
+                <p class="hero-slide__title">Practical PD, built around your team.</p>
+                <p>Ten facilitated topics for the season ahead &mdash; inclusive practice, confident conversations, case notes, higher-volume caseloads, employer engagement, and AI in employment services. Run it as a Lunch &amp; Learn, a workshop, or a half-day.</p>
+                <div class="hero__cta">
+                  <a class="btn btn--accent" href="professional-development.html">See the PD catalogue</a>
+                  <a class="btn btn--ghost" href="courses.html">Self-paced courses</a>
+                </div>
+              </div>
+              <div class="hero__logo">
+                <img src="assets/logos/logo-full.png" alt="">
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="hero__logo">
-          <img src="assets/logos/logo-full.png" alt="">
+
+        <div class="hero-nav" id="hero-nav" hidden>
+          <button class="hero-arrow" type="button" data-hero-dir="-1" aria-label="Previous slide">&#8249;</button>
+          <div class="hero-dots" id="hero-dots" role="tablist" aria-label="Choose a slide"></div>
+          <button class="hero-arrow" type="button" data-hero-dir="1" aria-label="Next slide">&#8250;</button>
+          <button class="hero-play" type="button" id="hero-play" aria-label="Pause slideshow">&#10074;&#10074;</button>
         </div>
       </div>
     </section>
 
     <section class="section" id="offers">
       <div class="container">
-        <h2 class="section-title center">What theHUB offers</h2>
+        <h2 class="section-title center">What The Hub offers</h2>
         <p class="lead center" style="margin: 0 auto 2.5rem;">Practical, real-world support for employment professionals who work with jobseekers facing complex barriers.</p>
         <div class="grid">
           <article class="card">
@@ -134,7 +172,7 @@
           <article class="card">
             <div class="card__meta">Job board</div>
             <h3>Find your next opportunity</h3>
-            <p>Browse current openings curated by theHUB and partner employers.</p>
+            <p>Browse current openings curated by The Hub and partner employers.</p>
             <div class="card__footer"><a class="btn btn--outline" href="jobs.html">Browse jobs</a></div>
           </article>
           <article class="card">
@@ -154,6 +192,45 @@
         <a class="btn btn--accent" href="contact.html">Get in touch</a>
       </div>
     </section>
+
+    <div class="tour-overlay welcome-overlay" id="welcome-overlay" hidden>
+      <div class="tour-modal" role="dialog" aria-labelledby="welcome-title" aria-modal="true">
+        <button class="tour-close" id="welcome-close" aria-label="Close welcome" type="button">&times;</button>
+        <p class="tagline" style="margin: 0;">Welcome!</p>
+        <h2 id="welcome-title" style="margin: .25rem 0 .5rem;">Glad you're here</h2>
+        <p class="lead" style="margin: 0 0 1.25rem;">The Hub @PATH supports front-line employment professionals. Here's a quick look at what you'll find &mdash; everything below is also in the menu at the top of the page.</p>
+        <div class="welcome-team" aria-label="The Hub team">
+          <span class="welcome-avatar" style="background-image: url('assets/people/mateja-mihelcic.jpg');" title="Mateja Mihelcic"></span>
+          <span class="welcome-avatar" style="background-image: url('assets/people/shannon-mccracken.jpg');" title="Shannon McCracken"></span>
+          <span class="welcome-avatar" style="background-image: url('assets/people/sri.jpg');" title="Sri Prasad"></span>
+          <span class="welcome-avatar" style="background-image: url('assets/people/kevin-westwood.jpg?v=20260908');" title="Kevin Westwood"></span>
+          <span class="welcome-team__label">Your team at The Hub</span>
+        </div>
+        <div class="tour-cards welcome-cards">
+          <a class="tour-card welcome-card" href="jobs.html">
+            <div class="tour-icon" aria-hidden="true">&#128188;</div>
+            <h3>Job Board</h3>
+            <p>Browse current openings curated by The Hub and partner employers &mdash; and send them straight to your clients.</p>
+            <span class="welcome-card__cta">Open the job board &#8594;</span>
+          </a>
+          <a class="tour-card welcome-card" href="courses.html">
+            <div class="tour-icon" aria-hidden="true">&#127891;</div>
+            <h3>Courses</h3>
+            <p>Self-paced professional development built for employment counsellors and front-line staff.</p>
+            <span class="welcome-card__cta">View courses &#8594;</span>
+          </a>
+          <a class="tour-card welcome-card" href="events.html">
+            <div class="tour-icon" aria-hidden="true">&#128197;</div>
+            <h3>Events</h3>
+            <p>Workshops, case conferences, and PD sessions on the calendar &mdash; see what's coming up.</p>
+            <span class="welcome-card__cta">See events &#8594;</span>
+          </a>
+        </div>
+        <div class="tour-footer">
+          <button class="btn btn--primary" id="welcome-dismiss" type="button">Got it &mdash; explore The Hub</button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -161,7 +238,7 @@
       <div class="footer__grid">
         <div class="footer__brand">
           <span class="footer__brand-logo">
-            <img src="assets/logos/logo-full.png" alt="theHUB @PATH">
+            <img src="assets/logos/logo-full.png" alt="The Hub @PATH">
           </span>
           <p>A program of PATH Employment Services, Hamilton, Ontario. Supporting employment professionals who support jobseekers.</p>
         </div>
@@ -171,7 +248,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="jobs.html">Job Board</a></li>
             <li><a href="events.html">Events</a></li>
-            <li><a href="courses.html">Courses</a></li>
+            <li><a href="professional-development.html">Live Training</a></li>
+            <li><a href="courses.html">Self-Paced Courses</a></li>
             <li><a href="newsletters.html">Newsletters</a></li>
           </ul>
         </div>
@@ -197,13 +275,15 @@
   </footer>
 
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title">
-    <p id="cookie-title"><strong>We use cookies.</strong> theHUB uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <p id="cookie-title"><strong>We use cookies.</strong> The Hub uses Google Analytics to understand how visitors use this site. Analytics cookies only load if you accept. See our <a href="privacy.html">Privacy Policy</a>.</p>
     <div class="cookie-banner__actions">
       <button class="btn btn--primary" data-consent="accepted">Accept</button>
       <button class="btn btn--outline" data-consent="declined">Decline</button>
     </div>
   </div>
 
-  <script src="js/site.js"></script>
+  <script src="data/events.js?v=20260908"></script>
+  <script src="data/newsletters.js?v=20260908"></script>
+  <script src="js/site.js?v=20260908"></script>
 </body>
 </html>

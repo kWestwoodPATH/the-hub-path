@@ -39,7 +39,7 @@ window.HUB_EVENTS = [
     "description": "ADHD can make engaging in employment services very challenging for job seekers - executive functioning, organization, and follow-through can lead to avoidance and stress. This one-hour session deepens your understanding of ADHD and gives you practical tools for your practice: how to structure appointments for maximum impact and lower stress, reduce stigma, and help job seekers practice self-advocacy.",
     "image": "",
     "registerUrl": "https://forms.office.com/Pages/ResponsePage.aspx?id=kebrX7LJjk6wisW1-8MqeOQRe_0KB2FCqVuIuPc6OyNUNTRSMDhKVUhaR1AzSVVVUUszMlY5UTY4US4u",
-    "host": "theHUB @PATH"
+    "host": "The Hub @PATH"
   },
   {
     "title": "Breaking Barriers: ADHD",
@@ -49,7 +49,7 @@ window.HUB_EVENTS = [
     "description": "Second session offering of Breaking Barriers: ADHD - deepen your understanding of ADHD and gain practical tools to support job seekers who experience it.",
     "image": "",
     "registerUrl": "https://forms.office.com/Pages/ResponsePage.aspx?id=kebrX7LJjk6wisW1-8MqeOQRe_0KB2FCqVuIuPc6OyNUNTRSMDhKVUhaR1AzSVVVUUszMlY5UTY4US4u",
-    "host": "theHUB @PATH"
+    "host": "The Hub @PATH"
   },
   {
     "title": "Breaking Barriers: Depression",
@@ -79,6 +79,7 @@ window.HUB_EVENTS = [
     "description": "Working in employment services is meaningful, but it can also be difficult. If you're struggling with burnout, boundaries, managing your schedule, and taking time for yourself, you're not alone. Join occupational therapist Sri Prasad for practical, realistic strategies to prioritize your wellness, build your resilience, and translate those skills into your work with job seekers.",
     "image": "",
     "registerUrl": "https://forms.office.com/pages/responsepage.aspx?id=kebrX7LJjk6wisW1-8MqeDdNRceEfrtApvfpQ6I-EeVUNEc3VkI5V1FIQVRTUEREQVMxOUtKNFoyTy4u&route=shorturl",
+    "zoomUrl": "https://ca01web.zoom.us/j/63369405516",
     "host": "Sri Prasad"
   },
   {
@@ -89,6 +90,51 @@ window.HUB_EVENTS = [
     "description": "Second session offering of Building Resilience - practical strategies to prioritize your wellness, increase your resilience, and support the job seekers you work with.",
     "image": "",
     "registerUrl": "https://forms.office.com/pages/responsepage.aspx?id=kebrX7LJjk6wisW1-8MqeDdNRceEfrtApvfpQ6I-EeVUNEc3VkI5V1FIQVRTUEREQVMxOUtKNFoyTy4u&route=shorturl",
+    "zoomUrl": "https://ca01web.zoom.us/j/66254004195",
     "host": "Sri Prasad"
+  },
+  {
+    "title": "Breaking Barriers: Schizophrenia",
+    "date": "2026-10-14",
+    "time": "1:00 PM",
+    "location": "Virtual (Zoom)",
+    "description": "Build your confidence in supporting job seekers living with schizophrenia. This practical webinar helps employment professionals understand how schizophrenia can shape the employment journey, recognize common barriers and strengths, and explore strategies for effective, person-centred support. Learn how thoughtful adaptations, workplace accommodations, and collaborative approaches help job seekers move toward meaningful and sustainable employment.",
+    "image": "",
+    "registerUrl": "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=kebrX7LJjk6wisW1-8MqeOQRe_0KB2FCqVuIuPc6OyNUM1pZTUw4MTBKMkZUVUpIRlpaWEtPQk5BMy4u",
+    "zoomUrl": "https://ca01web.zoom.us/j/65241737998?pwd=Q7woc0A8ZDUf6b0UlwuPVdgtKCry9U.1",
+    "host": "Mateja Mihelcic"
+  },
+  {
+    "title": "Breaking Barriers: Schizophrenia",
+    "date": "2026-10-15",
+    "time": "1:00 PM",
+    "location": "Virtual (Zoom)",
+    "description": "Second session offering of Breaking Barriers: Schizophrenia - understand how schizophrenia can shape the employment journey, recognize common barriers and strengths, and explore strategies for effective, person-centred support.",
+    "image": "",
+    "registerUrl": "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=kebrX7LJjk6wisW1-8MqeOQRe_0KB2FCqVuIuPc6OyNUM1pZTUw4MTBKMkZUVUpIRlpaWEtPQk5BMy4u",
+    "zoomUrl": "https://ca01web.zoom.us/j/62160432451?pwd=sB3fxPefTw2pprEbxrAGayOw3YhnQ0.1",
+    "host": "Mateja Mihelcic"
+  },
+  {
+    "title": "Breaking Barriers: Supporting Justice-Involved Job Seekers",
+    "date": "2026-11-17",
+    "time": "1:00 PM",
+    "location": "Virtual (Zoom)",
+    "description": "Justice involvement creates significant barriers to employment, including stigma, employment gaps, record checks, and difficult conversations with employers. This practical session helps employment service professionals build confidence supporting justice-involved job seekers through respectful conversations, thoughtful employment planning, disclosure preparation, and realistic job search strategies. Participants leave with practical approaches to reduce barriers, challenge assumptions, and support job seekers in moving forward with confidence.",
+    "image": "",
+    "registerUrl": "https://forms.cloud.microsoft/pages/responsepage.aspx?id=kebrX7LJjk6wisW1-8MqeCFyi02j-9hFkNgPfhSkjGRUNDFKS1Q5UTJFRk83N1pER0VKS0dLUzUzTC4u&route=shorturl",
+    "zoomUrl": "https://ca01web.zoom.us/j/65182248216?pwd=cetRuqvnlacaaZ6A5bdb10qFP2m2na.1",
+    "host": "Shannon McCracken"
+  },
+  {
+    "title": "Breaking Barriers: Supporting Justice-Involved Job Seekers",
+    "date": "2026-11-19",
+    "time": "1:00 PM",
+    "location": "Virtual (Zoom)",
+    "description": "Second session offering of Breaking Barriers: Supporting Justice-Involved Job Seekers - respectful conversations, thoughtful employment planning, disclosure preparation, and realistic job search strategies.",
+    "image": "",
+    "registerUrl": "https://forms.cloud.microsoft/pages/responsepage.aspx?id=kebrX7LJjk6wisW1-8MqeCFyi02j-9hFkNgPfhSkjGRUNDFKS1Q5UTJFRk83N1pER0VKS0dLUzUzTC4u&route=shorturl",
+    "zoomUrl": "https://ca01web.zoom.us/j/65182248216?pwd=cetRuqvnlacaaZ6A5bdb10qFP2m2na.1",
+    "host": "Shannon McCracken"
   }
 ];
